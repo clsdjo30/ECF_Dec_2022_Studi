@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Partner;
+use App\Entity\Permission;
 use App\Entity\User;
 use DateTime;
 use Exception;
@@ -20,6 +21,7 @@ class   PartnerTest extends KernelTestCase
             ->setCreatedAt(new DateTime('2009-06-08 20:30:00'))
             ->setUpdatedAt(new DateTime('2009-07-10 20:30:00'));
     }
+
     /**
      * @throws Exception
      */
@@ -66,6 +68,19 @@ class   PartnerTest extends KernelTestCase
         $partner = (new Partner())->setUser($user);
 
         $this->assertTrue((bool)$partner->getUser());
+    }
+
+    public function testAddPermissionToPartner(): void
+    {
+        $perm =( new Permission())
+            ->setIsActive('permission')
+            ->setIsActive(true);
+        $partner = (new Partner())
+            ->addGlobalPermission($perm);
+
+       $this->assertNotNull($partner->getGlobalPermissions() ) ;
+
+
     }
 
     /**

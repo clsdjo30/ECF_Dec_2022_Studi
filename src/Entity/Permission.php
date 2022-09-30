@@ -6,6 +6,7 @@ use App\Repository\PermissionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PermissionRepository::class)]
 class Permission
@@ -16,9 +17,15 @@ class Permission
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Le nom de la permission est trop long'
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?bool $isActive = null;
 
     #[ORM\ManyToMany(targetEntity: Partner::class, mappedBy: 'globalPermissions')]

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PartnerRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,6 +45,14 @@ class Partner
 
     #[ORM\OneToOne(mappedBy: 'franchising', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'partners')]
+    private Collection $globalPermissions;
+
+    public function __construct()
+    {
+        $this->globalPermissions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,6 +132,30 @@ class Partner
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getGlobalPermissions(): Collection
+    {
+        return $this->globalPermissions;
+    }
+
+    public function addGlobalPermission(Permission $globalPermission): self
+    {
+        if (!$this->globalPermissions->contains($globalPermission)) {
+            $this->globalPermissions->add($globalPermission);
+        }
+
+        return $this;
+    }
+
+    public function removeGlobalPermission(Permission $globalPermission): self
+    {
+        $this->globalPermissions->removeElement($globalPermission);
 
         return $this;
     }

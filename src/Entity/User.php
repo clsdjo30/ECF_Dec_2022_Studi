@@ -52,6 +52,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Partner $franchising = null;
 
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Subsidiary $roomManager = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +158,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFranchising(Partner $franchising): self
     {
         $this->franchising = $franchising;
+
+        return $this;
+    }
+
+    public function getRoomManager(): ?Subsidiary
+    {
+        return $this->roomManager;
+    }
+
+    public function setRoomManager(Subsidiary $roomManager): self
+    {
+        $this->roomManager = $roomManager;
 
         return $this;
     }

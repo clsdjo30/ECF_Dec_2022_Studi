@@ -49,9 +49,13 @@ class Partner
     #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'partners')]
     private Collection $globalPermissions;
 
+    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Subsidiary::class, orphanRemoval: true)]
+    private Collection $subsidiaries;
+
     public function __construct()
     {
         $this->globalPermissions = new ArrayCollection();
+        $this->subsidiaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +160,36 @@ class Partner
     public function removeGlobalPermission(Permission $globalPermission): self
     {
         $this->globalPermissions->removeElement($globalPermission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subsidiary>
+     */
+    public function getSubsidiaries(): Collection
+    {
+        return $this->subsidiaries;
+    }
+
+    public function addSubsidiary(Subsidiary $subsidiary): self
+    {
+        if (!$this->subsidiaries->contains($subsidiary)) {
+            $this->subsidiaries->add($subsidiary);
+            $subsidiary->setPartner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiary(Subsidiary $subsidiary): self
+    {
+        if ($this->subsidiaries->removeElement($subsidiary)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiary->getPartner() === $this) {
+                $subsidiary->setPartner(null);
+            }
+        }
 
         return $this;
     }

@@ -31,9 +31,13 @@ class Permission
     #[ORM\ManyToMany(targetEntity: Partner::class, mappedBy: 'globalPermissions')]
     private Collection $partners;
 
+    #[ORM\ManyToMany(targetEntity: Subsidiary::class, mappedBy: 'roomPermissions')]
+    private Collection $subsidiaries;
+
     public function __construct()
     {
         $this->partners = new ArrayCollection();
+        $this->subsidiaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,6 +91,33 @@ class Permission
     {
         if ($this->partners->removeElement($partner)) {
             $partner->removeGlobalPermission($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subsidiary>
+     */
+    public function getSubsidiaries(): Collection
+    {
+        return $this->subsidiaries;
+    }
+
+    public function addSubsidiary(Subsidiary $subsidiary): self
+    {
+        if (!$this->subsidiaries->contains($subsidiary)) {
+            $this->subsidiaries->add($subsidiary);
+            $subsidiary->addRoomPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiary(Subsidiary $subsidiary): self
+    {
+        if ($this->subsidiaries->removeElement($subsidiary)) {
+            $subsidiary->removeRoomPermission($this);
         }
 
         return $this;

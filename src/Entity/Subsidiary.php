@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubsidiaryRepository::class)]
 class Subsidiary
@@ -17,27 +18,58 @@ class Subsidiary
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max:40,
+        maxMessage: "Le nom de la salle est trop long"
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $logoUrl = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $url = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min:50,
+        minMessage: "La description est trop courte"
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[ASsert\NotBlank]
+    #[Assert\Length(
+        max:10,
+        maxMessage: "Le numéro est trop long"
+    )]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min:20,
+        minMessage: "L'adresse est trop courte"
+    )]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max:40,
+        maxMessage: "Le nom de la salle est trop long"
+    )]
     private ?string $city = null;
 
     #[ORM\Column]
+    #[Assert\Length(
+        min:2,
+        max:5,
+        minMessage: "Le Code postal est trop court",
+        maxMessage: "le code postal est trop long"
+    )]
     private ?int $postalCode = null;
 
     #[ORM\Column]
@@ -52,6 +84,12 @@ class Subsidiary
 
     #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'subsidiaries')]
     private Collection $roomPermissions;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
     {
@@ -220,6 +258,30 @@ class Subsidiary
     public function removeRoomPermission(Permission $roomPermission): self
     {
         $this->roomPermissions->removeElement($roomPermission);
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

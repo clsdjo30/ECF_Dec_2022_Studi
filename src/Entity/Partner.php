@@ -41,6 +41,9 @@ class Partner
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $updatedAt = null;
 
+    #[ORM\OneToOne(mappedBy: 'franchising', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +105,23 @@ class Partner
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        // set the owning side of the relation if necessary
+        if ($user->getFranchising() !== $this) {
+            $user->setFranchising($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

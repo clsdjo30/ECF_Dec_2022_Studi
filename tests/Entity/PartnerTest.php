@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Partner;
+use App\Entity\User;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -57,6 +58,14 @@ class   PartnerTest extends KernelTestCase
     public function testToLongBlankPhoneNumberEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setPhoneNumber('00102030405'), 1);
+    }
+
+    public function testValidPartnerGetUserEntity(): void
+    {
+        $user = new User();
+        $partner = (new Partner())->setUser($user);
+
+        $this->assertTrue((bool)$partner->getUser());
     }
 
     /**

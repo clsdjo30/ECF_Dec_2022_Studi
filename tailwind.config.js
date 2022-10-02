@@ -5,6 +5,10 @@ module.exports = {
     './node_modules/tw-elements/dist/js/**/*.js'
   ],
   theme: {
+    fontFamily: {
+      'menu-item': ['Raleway'],
+      'title': ['Rokkitt'],
+    },
     extend: {},
   },
   plugins: [

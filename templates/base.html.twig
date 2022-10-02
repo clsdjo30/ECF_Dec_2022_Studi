@@ -19,15 +19,15 @@
 <body class="font-menu-item antialiased">
 <div class="h-screen w-screen">
 
-    {{ include('components/dashboard/_mobil-navigation.html.twig') }}
-    {{ include('components/dashboard/_sidebar-menu-desktop.html.twig') }}
+    {{ include('components/dashboard/navigation/_mobil-navigation.html.twig') }}
+    {{ include('components/dashboard/navigation/_sidebar-menu-desktop.html.twig') }}
 
     <div class="relative md:ml-60 bg-blueGray-50">
         <!-- Header -->
         <div class="bg-orange-500 md:pt-12 pb-32 pt-12 lg:h-max">
             <div class="px-4 md:px-10 mx-auto my-auto w-full">
                 {% block mainTop %}
-                    {{ include('components/dashboard/_top-search-bar.html.twig') }}
+                    {# inclure la barre de recherche sur le page index #}
                 {% endblock %}
             </div>
         </div>
@@ -36,7 +36,7 @@
 
         {% endblock %}
 
-        {{ include('components/dashboard/_footer.html.twig') }}
+        {{ include('components/dashboard/content-dashboard/_footer.html.twig') }}
     </div>
 </div>
 </body>

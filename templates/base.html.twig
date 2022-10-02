@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Lions Fitness Club{% endblock %}</title>
-        <link
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        />
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lions Fitness Club{% endblock %}</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body class="font-menu-item antialiased">
-    <div class="h-screen w-screen">
-        <div id="root">
-            <div>
-                {{ include('partials/_navigations.html.twig') }}
-                <div class="relative md:ml-64 bg-blueGray-50">
-                    <!-- Header -->
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body class="font-menu-item antialiased">
+<div class="h-screen w-screen">
 
-                        <div class="bg-orange-500 md:pt-12 pb-32 pt-12 lg:h-max">
-                            <div class="px-4 md:px-10 mx-auto my-auto w-full">
-                                {% block mainTop %}
-                                {% endblock %}
-                            </div>
-                        </div>
-                        {% block content %}
+    {{ include('components/dashboard/_mobil-navigation.html.twig') }}
+    {{ include('components/dashboard/_sidebar-menu-desktop.html.twig') }}
 
-
-                        {% endblock %}
-
-                        {{ include('partials/_footer.html.twig') }}
-                    </div>
-                </div>
+    <div class="relative md:ml-60 bg-blueGray-50">
+        <!-- Header -->
+        <div class="bg-orange-500 md:pt-12 pb-32 pt-12 lg:h-max">
+            <div class="px-4 md:px-10 mx-auto my-auto w-full">
+                {% block mainTop %}
+                    {{ include('components/dashboard/_top-search-bar.html.twig') }}
+                {% endblock %}
             </div>
         </div>
+        {% block content %}
+
+
+        {% endblock %}
+
+        {{ include('components/dashboard/_footer.html.twig') }}
     </div>
-    </div>
-    </body>
+</div>
+</body>
 </html>

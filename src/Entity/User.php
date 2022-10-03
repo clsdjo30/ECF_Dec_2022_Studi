@@ -50,14 +50,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Partner $franchising = null;
+    private ?Partner $franchising;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Subsidiary $roomManager = null;
+    private ?Subsidiary $roomManager;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?TechTeam $techTeam = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?TechTeam $techTeam;
 
     public function getId(): ?int
     {

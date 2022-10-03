@@ -1,9 +1,29 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lions Fitness Club{% endblock %}</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-{% block mainTop %}
-    {{include('components/dashboard/content-dashboard/_top-search-bar.html.twig') }}
-{% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body class="font-menu-item antialiased">
+<div class="h-screen w-screen">
 
-{% block content %}
-    {{ include('components/dashboard/_dashboard-index-content.html.twig') }}
-{% endblock %}
+    {% block content %}
+        {{ include('components/_home.html.twig') }}
+    {% endblock %}
+
+</div>
+</body>
+</html>
+

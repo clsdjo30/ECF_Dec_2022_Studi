@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Subsidiary $roomManager = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?TechTeam $techTeam = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,6 +173,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoomManager(Subsidiary $roomManager): self
     {
         $this->roomManager = $roomManager;
+
+        return $this;
+    }
+
+    public function getTechTeam(): ?TechTeam
+    {
+        return $this->techTeam;
+    }
+
+    public function setTechTeam(TechTeam $techTeam): self
+    {
+        // set the owning side of the relation if necessary
+        if ($techTeam->getUser() !== $this) {
+            $techTeam->setUser($this);
+        }
+
+        $this->techTeam = $techTeam;
 
         return $this;
     }

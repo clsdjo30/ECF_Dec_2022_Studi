@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
             $perm = new Permission();
 
             $perm->setName($permissionValue)
-                ->setIsActive($faker->boolean(0));
+                ->setIsActive(false);
             $manager->persist($perm);
             $manager->flush();
             $permissions[] = $perm;
@@ -92,8 +92,8 @@ class AppFixtures extends Fixture
                 ->setFranchising($partner);
 
             foreach ($permissions as $permission) {
-                $permission->setIsActive($faker->boolean(60));
-                $partner->addGlobalPermission($permission);
+               $perm = $permission->setIsActive($faker->boolean(60));
+                $partner->addGlobalPermission($perm);
 
             }
 

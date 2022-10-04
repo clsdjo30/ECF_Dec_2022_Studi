@@ -1,16 +1,16 @@
 
-{# boucle les parrtners #}
+{% for partner in partners %}
     <div class="xxl:w-2/12  xl:w-4/12 lg:w-6/12  w-full px-4">
         <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6  shadow-lg">
             <div class="flex-auto p-4">
                 <div class="flex flex-wrap">
                     <div class="relative w-full pr-4 max-w-full flex-grow flex-1 mb-3">
                         <h3 class="text-zinc-900 uppercase font-bold text-lg">
-                            {# partner name #}
+                            {{ partner.name }}
                         </h3>
                         <span class="font-extra-light  lowercase text-base">
                         <i class="fa fa-user mr-3" style="color: #ED8428;"></i>
-                        <span class="text-teal-600 capitalize">{# partner user firstname #} {# partner user lastName #}</span>
+                        <span class="text-teal-600 capitalize">{{ partner.user.firstname }} {{ partner.user.lastName }}</span>
                     </span>
                     </div>
                     <div class="relative w-auto pl-4 flex-initial">
@@ -25,11 +25,11 @@
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900">
                     <i class="fa fa-envelope-open-text mr-3 text-zinc-900"></i>
-                    <span>{# partner user email #}</span>
+                    <span>{{ partner.user.email }}</span>
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900 mb-3">
                     <i class="fa fa-phone-square mr-3"></i>
-                    <span>{# numero de tel #}</span>
+                    <span>{{partner.phoneNumber}}</span>
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900 mb-3">
                     <i class="fa fa-globe mr-3"></i>
@@ -39,7 +39,7 @@
                 <div class="font-extra-light text-base text-zinc-900 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
 
-                    <span>Cette franchise posséde {# on pluraliz l'affichage #}</span>
+                    <span>Cette franchise posséde {{ pluralize(partner.subsidiaries | length, 'salle', 'salles') }}<</span>
 
                 </div>
 
@@ -62,13 +62,27 @@
                 <!-Affichage actif/inactif--->
                 <div class="text-base h-12 flex justify-between items-center px-2 ">
                     <div>
-                        {# si partner isActive = true alors affiche actif sinon désactivé #}
+                        {% if partner.isActive == true %}
+                            <span   data-choose-partner-target="active"
+                                    class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
+                                    Actif
+                                </span>
+                        {% else %}
+                            <span
+                                    class="px-5 py-1 rounded-full shadow-lg bg-orange-300 text-white font-bold ">
+                                    Inactif
+                                </span>
+                        {% endif %}
                     </div>
                     <div>
                         <a
                                 href="{# lien vers partner details #}"
                                 class="border-2 border-orange-500/50 rounded px-5 py-1 text-xs text-zinc-900 hover:border-teal-500 hover:text-sm">
-                            {# si salle > 1  => affichage au pluriel #}
+                            {% if partner.subsidiaries.count == 1 %}
+                                Voir la salle
+                            {% else %}
+                                Voir les salles
+                            {% endif %}
                         </a>
 
                     </div>
@@ -78,4 +92,4 @@
             </div>
         </div>
     </div>
-{# fin de boucle for #}
+{% endfor %}

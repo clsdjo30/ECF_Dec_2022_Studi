@@ -62,14 +62,6 @@ class   PartnerTest extends KernelTestCase
         $this->assertHasErrors($this->getEntity()->setPhoneNumber('00102030405'), 1);
     }
 
-    public function testValidPartnerGetUserEntity(): void
-    {
-        $user = new User();
-        $partner = (new Partner())->setUser($user);
-
-        $this->assertTrue((bool)$partner->getUser());
-    }
-
     public function testAddPermissionToPartner(): void
     {
         $perm =( new Permission())

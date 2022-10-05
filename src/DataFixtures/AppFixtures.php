@@ -83,7 +83,7 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setFranchising($partner);
 
-            foreach ($permissionValues as  $permissionValue) {
+            foreach ($permissionValues as $permissionValue) {
                 $perm = new Permission();
 
                 $perm->setName($permissionValue)
@@ -124,15 +124,13 @@ class AppFixtures extends Fixture
                 $manager->persist($userSubsidiary);
                 $manager->persist($park);
             }
-                $manager->persist($partner);
-                $manager->persist($userPartner);
-
-
+            $manager->persist($partner);
+            $manager->persist($userPartner);
 
 
         }
 
-                $manager->flush();
+        $manager->flush();
 
     }
 }

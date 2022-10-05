@@ -1,4 +1,3 @@
-
 {% for partner in partners %}
     <div class="xxl:w-2/12  xl:w-4/12 lg:w-6/12  w-full px-4">
         <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6  shadow-lg">
@@ -15,7 +14,7 @@
                     </div>
                     <div class="relative w-auto pl-4 flex-initial">
                         <div class="text-white text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full">
-                            {#logo url logo de l'enseigne #}
+                            {# logo url logo de l'enseigne #}
                             <img
                                     src="{{ asset('img/dashboard_logo.png') }}"
                                     alt="Logo de Lions Fitness Club">
@@ -29,23 +28,35 @@
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900 mb-3">
                     <i class="fa fa-phone-square mr-3"></i>
-                    <span>{{partner.phoneNumber}}</span>
+                    <span>{{ partner.phoneNumber }}</span>
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900 mb-3">
                     <i class="fa fa-globe mr-3"></i>
-                    <span>{# adresse du site internet#}</span>
+
+
+                    {% set subsidiaryUrl = 0 %}
+                    {% for subsidiary in partner.subsidiaries %}
+                        {% set subsidiaryUrl = subsidiaryUrl + 1 %}
+                    {% endfor %}
+
+                    {% if subsidiaryUrl < 2 %}
+                        <span>Cette franchise possède {{ subsidiaryUrl }} site web </span>
+                    {% else %}
+                        <span>Cette franchise possède {{ subsidiaryUrl }} sites web</span>
+                    {% endif %}
+
                 </div>
 
                 <div class="font-extra-light text-base text-zinc-900 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
 
-                    <span>Cette franchise posséde {{ pluralize(partner.subsidiaries | length, 'salle', 'salles') }}<</span>
+                    <span>Cette franchise posséde {{ pluralize(partner.subsidiaries | length, 'salle', 'salles') }}</span>
 
                 </div>
 
                 <!--Start of Permission Modal-->
                 <!-- Button trigger modal -->
-                <div class="flex items-center font-extra-light text-base text-zinc-900 mb-3" >
+                <div class="flex items-center font-extra-light text-base text-zinc-900 mb-3">
                     <i class="fa fa-file-invoice mr-3" style="color: #04D6C8;"></i>
                     <button type="button"
                             class=""
@@ -63,8 +74,8 @@
                 <div class="text-base h-12 flex justify-between items-center px-2 ">
                     <div>
                         {% if partner.isActive == true %}
-                            <span   data-choose-partner-target="active"
-                                    class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
+                            <span data-choose-partner-target="active"
+                                  class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
                                     Actif
                                 </span>
                         {% else %}

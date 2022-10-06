@@ -4,7 +4,7 @@
         <div class="flex flex-col justify-center items-center p-4">
             <div class="flex justify-start items-center w-full " >
                 <i class="fa fa-arrow-circle-left mr-3 text-zinc-900 " style="color: #04D6C8;"></i>
-                <a href="{# lien ver liste des partenaire #}">
+                <a href="{{ path('dashboard') }}">
                     retour à la liste
                 </a>
             </div>
@@ -16,11 +16,11 @@
                 <div class="flex flex-wrap">
                     <div class="relative w-full pr-4 max-w-full flex-grow flex-1 mb-3">
                         <h3 class="text-zinc-900 uppercase font-bold text-lg">
-                            <span class="capitalize text-base text-underline"> Société </span>: {# partner.name #}
+                            <span class="capitalize text-base text-underline"> Société </span>: {{ partner.name }}
                         </h3>
                         <span class="font-extra-light  lowercase text-base">
                                 <i class="fa fa-user mr-3" style="color: #ED8428;"></i>
-                                <span class="text-teal-600 capitalize">{# partner.userId.firstName #} {# partner.userId.lastName#} </span>
+                                <span class="text-teal-600 capitalize">{{ partner.user.firstName }} {{ partner.user.lastName}} </span>
                             </span>
                     </div>
                     <div class="relative w-auto pl-4 flex-initial">
@@ -33,27 +33,37 @@
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900">
                     <i class="fa fa-envelope-open-text mr-3 text-zinc-900"></i>
-                    <span>{#  partner.userId.email #}</span>
+                    <span>{{  partner.user.email }}</span>
                 </div>
                 <div class="font-extra-light  lowercase text-sm text-zinc-900 mb-3">
                     <i class="fa fa-phone-square mr-3"></i>
-                    <span>{# partner.phoneNumber #}</span>
+                    <span>{{ partner.phoneNumber }}</span>
                 </div>
                 <div class="font-extra-light text-base text-zinc-900 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
-                    <span>Ce franchise posséde {# pluralize le nombre de salle #}.</span>
+                    <span>Ce franchise posséde {{ pluralize(partner.subsidiaries | length, 'salle', 'salles') }}.</span>
                     <span class="italic text-xs"> Voir ci-dessous</span>
                 </div>
                 <!-Affichage actif/inactif--->
                 <div class="text-base h-12 flex justify-between items-center px-2 ">
 
                     <div>
-                        {# si partner activ = actif sinon desactivé #}
+                        {% if partner.isActive == true %}
+                            <span data-choose-partner-target="active"
+                                  class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
+                                    Actif
+                                </span>
+                        {% else %}
+                            <span
+                                    class="px-5 py-1 rounded-full shadow-lg bg-orange-300 text-white font-bold ">
+                                    Inactif
+                                </span>
+                        {% endif %}
                     </div>
                     <div>
                         <a
                              href="#"
-                             class="border-2 border-orange-200 rounded px-5 py-1 text-xs text-zinc-900 hover:border-teal-200"
+                             class="border-2 border-orange-200 rounded px-5 py-1 text-base text-zinc-900 hover:border-teal-200"
                         >
                                 Modifier le partenaire
 

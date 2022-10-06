@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $permissions = [];
+        $partnerPermissions = [];
 
         $permissionValues = [
             "Gestion des Planning",
@@ -49,15 +49,6 @@ class AppFixtures extends Fixture
             "Livraison de produits d'entretien",
         ];
 
-        foreach ($permissionValues as $permissionValue) {
-            $perm = new Permission();
-
-            $perm->setName($permissionValue)
-                ->setIsActive($faker->boolean(0));
-            $manager->persist($perm);
-            $manager->flush();
-            $permissions[] = $perm;
-        }
 
         // 1 membre de l'équipe tech
         $userTech = new User();
@@ -75,11 +66,12 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 20; $i++) {
 
+
             //compte franchise
             $partner = (new Partner())
                 ->setName($faker->company())
                 ->setPhoneNumber($faker->phoneNumber())
-                ->setIsActive($faker->boolean(50))
+                ->setIsActive($faker->boolean())
                 ->setCreatedAt($faker->dateTime())
                 ->setUpdatedAt($faker->dateTime());
 
@@ -91,11 +83,17 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setFranchising($partner);
 
-            foreach ($permissions as $permission) {
-                $permission->setIsActive($faker->boolean(60));
-                $partner->addGlobalPermission($permission);
+            foreach ($permissionValues as $permissionValue) {
+                $perm = new Permission();
 
+                $perm->setName($permissionValue)
+                    ->setIsActive($faker->boolean());
+
+                $partner->addGlobalPermission($perm);
+
+                $manager->persist($perm);
             }
+
 
             for ($j = 0; $j <= random_int(1, 3); $j++) {
 
@@ -126,11 +124,13 @@ class AppFixtures extends Fixture
                 $manager->persist($userSubsidiary);
                 $manager->persist($park);
             }
-            $manager->persist($userPartner);
             $manager->persist($partner);
+            $manager->persist($userPartner);
+
+
         }
 
-
         $manager->flush();
+
     }
 }

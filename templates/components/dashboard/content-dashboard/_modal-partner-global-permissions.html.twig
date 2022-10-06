@@ -19,7 +19,21 @@
                         data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body relative p-4">
-               {# boucle for pour afficher partner.golbalPermissions #}
+                {% for permission in partner.globalPermissions %}
+
+
+                    <div class="font-extra-light  lowercase text-lg text-zinc-900 mb-3">
+                        {{ (permission.isIsActive)
+                        ?
+                        '<i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F" ></i>'
+                        :
+                        '<i class="fa fa-ban mr-3 text-zinc-900" style="color:#FC0202" ></i>'
+                        }}
+                        <span>{{ permission }}</span>
+
+
+                    </div>
+                {% endfor %}
             </div>
             <div
                     class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">

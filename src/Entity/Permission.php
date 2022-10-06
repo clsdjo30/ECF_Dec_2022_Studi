@@ -24,6 +24,11 @@ class Permission
     )]
     private ?string $name = null;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     #[ORM\Column]
     #[Assert\NotBlank]
     private ?bool $isActive = null;

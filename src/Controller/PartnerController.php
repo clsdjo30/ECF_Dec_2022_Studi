@@ -51,7 +51,7 @@ class PartnerController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'partner_edit_permissions', methods: ['GET', 'POST'])]
-    #[ParamConverter('id', options: ['id' => 'partner_id'])]
+    #[ParamConverter('partner', options: ['id' => 'partner_id'])]
     public function editPermissions(Request $request, Partner $partner, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);

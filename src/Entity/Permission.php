@@ -29,37 +29,25 @@ class Permission
         return $this->name;
     }
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    private ?bool $isActive = null;
-
-    #[ORM\ManyToMany(targetEntity: Partner::class, mappedBy: 'globalPermissions')]
-    private Collection $partners;
-
     #[ORM\ManyToMany(targetEntity: Subsidiary::class, mappedBy: 'roomPermissions')]
     private Collection $subsidiaries;
 
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: PartnerPermission::class, orphanRemoval: true)]
+    private Collection $partnerPermissions;
+
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
+    private Collection $subsidiaryPermissions;
+
     public function __construct()
     {
-        $this->partners = new ArrayCollection();
         $this->subsidiaries = new ArrayCollection();
+        $this->partnerPermissions = new ArrayCollection();
+        $this->subsidiaryPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function isIsActive(): ?bool
@@ -70,33 +58,6 @@ class Permission
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Partner>
-     */
-    public function getPartners(): Collection
-    {
-        return $this->partners;
-    }
-
-    public function addPartner(Partner $partner): self
-    {
-        if (!$this->partners->contains($partner)) {
-            $this->partners->add($partner);
-            $partner->addGlobalPermission($this);
-        }
-
-        return $this;
-    }
-
-    public function removePartner(Partner $partner): self
-    {
-        if ($this->partners->removeElement($partner)) {
-            $partner->removeGlobalPermission($this);
-        }
 
         return $this;
     }
@@ -123,6 +84,66 @@ class Permission
     {
         if ($this->subsidiaries->removeElement($subsidiary)) {
             $subsidiary->removeRoomPermission($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PartnerPermission>
+     */
+    public function getPartnerPermissions(): Collection
+    {
+        return $this->partnerPermissions;
+    }
+
+    public function addPartnerPermission(PartnerPermission $partnerPermission): self
+    {
+        if (!$this->partnerPermissions->contains($partnerPermission)) {
+            $this->partnerPermissions->add($partnerPermission);
+            $partnerPermission->setPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removePartnerPermission(PartnerPermission $partnerPermission): self
+    {
+        if ($this->partnerPermissions->removeElement($partnerPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($partnerPermission->getPermission() === $this) {
+                $partnerPermission->setPermission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubsidiaryPermission>
+     */
+    public function getSubsidiaryPermissions(): Collection
+    {
+        return $this->subsidiaryPermissions;
+    }
+
+    public function addSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if (!$this->subsidiaryPermissions->contains($subsidiaryPermission)) {
+            $this->subsidiaryPermissions->add($subsidiaryPermission);
+            $subsidiaryPermission->setPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if ($this->subsidiaryPermissions->removeElement($subsidiaryPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiaryPermission->getPermission() === $this) {
+                $subsidiaryPermission->setPermission(null);
+            }
         }
 
         return $this;

@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Partner;
 use App\Form\PartnerType;
 use App\Repository\PartnerRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/partner')]
 class PartnerController extends AbstractController
 {
-    #[Route('/', name: 'app_partner_index', methods: ['GET'])]
+    #[Route('/', name: 'partner_index', methods: ['GET'])]
     public function index(PartnerRepository $partnerRepository): Response
     {
         return $this->render('partner/index.html.twig', [
@@ -31,7 +33,7 @@ class PartnerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $partnerRepository->save($partner, true);
 
-            return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partner/new.html.twig', [
@@ -48,19 +50,26 @@ class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Partner $partner, PartnerRepository $partnerRepository): Response
+    #[Route('/{id}/edit', name: 'partner_edit_permissions', methods: ['GET', 'POST'])]
+    #[ParamConverter('id', options: ['id' => 'partner_id'])]
+    public function editPermissions(Request $request, Partner $partner, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $partnerRepository->save($partner, true);
+            $partner = ($form->getData());
 
-            return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+            $manager->persist($partner);
+
+            $manager->flush();
+
+            $this->addFlash('success', 'Modifications de permissions enregistré ! ');
+                //TODO renvoyer vers la page du franchisé
+            return $this->redirectToRoute('partner_index');
         }
 
-        return $this->renderForm('partner/edit.html.twig', [
+        return $this->renderForm('partner/edit-permissions.html.twig', [
             'partner' => $partner,
             'form' => $form,
         ]);
@@ -73,6 +82,6 @@ class PartnerController extends AbstractController
             $partnerRepository->remove($partner, true);
         }
 
-        return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('partner_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,0 +1,52 @@
+{% import _self as formMacros %}
+
+<!--MACRO POUR AJOUT PERMISSION-->
+{% macro printPermissionRow(permissionForm) %}
+    <div class="flex justify-around mt-4">
+        <div class="w-5/12 -mr-36">
+            {{ form_widget(permissionForm.name) }}
+        </div>
+        <div class="flex form-check form-switch w-4/12">
+
+            {{ form_label(permissionForm.isActive, "Activer l'option ?", {
+                'label_attr': {
+                    'class': 'italic text-base  text-orange-400 mr-20'
+                }
+            }) }}
+            {{ form_widget(permissionForm.isActive,  {
+                'attr': {
+                    'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow'
+                },
+                'type' :"checkbox",
+                'role' :"switch",
+                'id' :"flexSwitchCheckChecked",
+
+            } ) }}
+        </div>
+    </div>
+
+{% endmacro %}
+
+<div class="flex justify-center items-center  bg-teal-400 rounded-lg shadow-2xl py-20 px-10">
+    <div class="flex flex-col items-center bg-white rounded shadow p-10 w-full">
+
+        <h1 class="text-center text-zinc-900 uppercase font-bold text-lg pb-12">
+            Gestion des Permissions
+        </h1>
+        <div class="w-full px-28">
+
+            {{ form_start(form) }}
+            {% for permissionForm in form.globalPermissions %}
+                {{ formMacros.printPermissionRow(permissionForm) }}
+            {% endfor %}
+
+            <div class="w-full flex justify-end items-center mb-5 mt-8">
+                <button class="btn w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize">
+                    {{ button_label|default('Sauver') }}
+                </button>
+
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

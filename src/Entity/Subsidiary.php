@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\SubsidiaryRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -86,6 +88,14 @@ class Subsidiary
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'subsidiary', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
+    private Collection $subsidiaryPermissions;
+
+    public function __construct()
+    {
+        $this->subsidiaryPermissions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -249,6 +259,36 @@ class Subsidiary
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubsidiaryPermission>
+     */
+    public function getSubsidiaryPermissions(): Collection
+    {
+        return $this->subsidiaryPermissions;
+    }
+
+    public function addSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if (!$this->subsidiaryPermissions->contains($subsidiaryPermission)) {
+            $this->subsidiaryPermissions->add($subsidiaryPermission);
+            $subsidiaryPermission->setSubsidiary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if ($this->subsidiaryPermissions->removeElement($subsidiaryPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiaryPermission->getSubsidiary() === $this) {
+                $subsidiaryPermission->setSubsidiary(null);
+            }
+        }
 
         return $this;
     }

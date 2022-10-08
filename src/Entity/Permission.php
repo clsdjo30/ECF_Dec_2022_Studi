@@ -27,9 +27,13 @@ class Permission
     #[ORM\OneToMany(mappedBy: 'permission', targetEntity: PartnerPermission::class, orphanRemoval: true)]
     private Collection $partnerPermissions;
 
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
+    private Collection $subsidiaryPermissions;
+
     public function __construct()
     {
         $this->partnerPermissions = new ArrayCollection();
+        $this->subsidiaryPermissions = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -78,6 +82,36 @@ class Permission
             // set the owning side to null (unless already changed)
             if ($partnerPermission->getPermission() === $this) {
                 $partnerPermission->setPermission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubsidiaryPermission>
+     */
+    public function getSubsidiaryPermissions(): Collection
+    {
+        return $this->subsidiaryPermissions;
+    }
+
+    public function addSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if (!$this->subsidiaryPermissions->contains($subsidiaryPermission)) {
+            $this->subsidiaryPermissions->add($subsidiaryPermission);
+            $subsidiaryPermission->setPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if ($this->subsidiaryPermissions->removeElement($subsidiaryPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiaryPermission->getPermission() === $this) {
+                $subsidiaryPermission->setPermission(null);
             }
         }
 

@@ -24,6 +24,11 @@ class SubsidiaryPermission
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    public function __toString(): string
+    {
+        return $this->permission->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

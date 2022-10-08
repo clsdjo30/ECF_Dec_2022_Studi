@@ -37,6 +37,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         $partnerPermissions = [];
+        $permissions = [];
 
         $permissionValues = [
             "Gestion des Planning",
@@ -48,6 +49,15 @@ class AppFixtures extends Fixture
             "Envoi de newsletter",
             "Livraison de produits d'entretien",
         ];
+            foreach ($permissionValues as $permissionValue) {
+                $perm = new Permission();
+
+                $perm->setName($permissionValue)
+                    ->setIsActive($faker->boolean());
+
+                $manager->persist($perm);
+                $permissions[] = $perm;
+            }
 
 
         // 1 membre de l'équipe tech
@@ -64,7 +74,7 @@ class AppFixtures extends Fixture
         $manager->persist($newTech);
 
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 2; $i++) {
 
 
             //compte franchise
@@ -75,6 +85,8 @@ class AppFixtures extends Fixture
                 ->setCreatedAt($faker->dateTime())
                 ->setUpdatedAt($faker->dateTime());
 
+            $manager->persist($partner);
+
             // user Franchise pour id de connexion
             $userPartner = new User();
             $userPartner->setEmail($faker->companyEmail())
@@ -83,16 +95,14 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setFranchising($partner);
 
-            foreach ($permissionValues as $permissionValue) {
-                $perm = new Permission();
+            foreach($permissions as $permission) {
+                $permission->setIsActive($faker->boolean());
 
-                $perm->setName($permissionValue)
-                    ->setIsActive($faker->boolean());
+                $partner->addGlobalPermission($permission);
 
-                $partner->addGlobalPermission($perm);
-
-                $manager->persist($perm);
+                $manager->persist($partner);
             }
+
 
 
             for ($j = 0; $j <= random_int(1, 3); $j++) {

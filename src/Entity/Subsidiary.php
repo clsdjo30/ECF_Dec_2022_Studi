@@ -82,19 +82,11 @@ class Subsidiary
     #[ORM\JoinColumn(nullable: false)]
     private ?Partner $partner = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'subsidiaries')]
-    private Collection $roomPermissions;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
-
-    public function __construct()
-    {
-        $this->roomPermissions = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -234,30 +226,6 @@ class Subsidiary
     public function setPartner(?Partner $partner): self
     {
         $this->partner = $partner;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getRoomPermissions(): Collection
-    {
-        return $this->roomPermissions;
-    }
-
-    public function addRoomPermission(Permission $roomPermission): self
-    {
-        if (!$this->roomPermissions->contains($roomPermission)) {
-            $this->roomPermissions->add($roomPermission);
-        }
-
-        return $this;
-    }
-
-    public function removeRoomPermission(Permission $roomPermission): self
-    {
-        $this->roomPermissions->removeElement($roomPermission);
 
         return $this;
     }

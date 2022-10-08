@@ -46,15 +46,11 @@ class Partner
     #[ORM\OneToOne(mappedBy: 'franchising', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'partners')]
-    private Collection $globalPermissions;
-
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Subsidiary::class, orphanRemoval: true)]
     private Collection $subsidiaries;
 
     public function __construct()
     {
-        $this->globalPermissions = new ArrayCollection();
         $this->subsidiaries = new ArrayCollection();
     }
 
@@ -136,30 +132,6 @@ class Partner
         }
 
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getGlobalPermissions(): Collection
-    {
-        return $this->globalPermissions;
-    }
-
-    public function addGlobalPermission(Permission $globalPermission): self
-    {
-        if (!$this->globalPermissions->contains($globalPermission)) {
-            $this->globalPermissions->add($globalPermission);
-        }
-
-        return $this;
-    }
-
-    public function removeGlobalPermission(Permission $globalPermission): self
-    {
-        $this->globalPermissions->removeElement($globalPermission);
 
         return $this;
     }

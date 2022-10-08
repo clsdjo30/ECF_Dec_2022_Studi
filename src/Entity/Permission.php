@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PermissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +24,14 @@ class Permission
     )]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: PartnerPermission::class, orphanRemoval: true)]
+    private Collection $partnerPermissions;
+
+    public function __construct()
+    {
+        $this->partnerPermissions = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
         return $this->name;
@@ -40,6 +50,36 @@ class Permission
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PartnerPermission>
+     */
+    public function getPartnerPermissions(): Collection
+    {
+        return $this->partnerPermissions;
+    }
+
+    public function addPartnerPermission(PartnerPermission $partnerPermission): self
+    {
+        if (!$this->partnerPermissions->contains($partnerPermission)) {
+            $this->partnerPermissions->add($partnerPermission);
+            $partnerPermission->setPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removePartnerPermission(PartnerPermission $partnerPermission): self
+    {
+        if ($this->partnerPermissions->removeElement($partnerPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($partnerPermission->getPermission() === $this) {
+                $partnerPermission->setPermission(null);
+            }
+        }
 
         return $this;
     }

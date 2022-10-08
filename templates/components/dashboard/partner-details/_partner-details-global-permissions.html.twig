@@ -2,15 +2,6 @@
     {% for permission in partner.globalPermissions %}
 
 
-        <div class="font-extra-light  lowercase text-lg text-zinc-900 mb-3">
-            {{ (permission.isIsActive)
-            ?
-            '<i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F" ></i>'
-            :
-            '<i class="fa fa-ban mr-3 text-zinc-900" style="color:#FC0202" ></i>'
-            }}
-            <span>{{ permission.name }}</span>
-
 
         </div>
     {% endfor %}

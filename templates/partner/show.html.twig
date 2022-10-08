@@ -14,7 +14,6 @@
             <div class="px-4 md:px-10 mx-auto my-auto w-full">
 
                 {% block mainTop %}
-                    {{ include('components/dashboard/partner-details/_top-partner-detail.html.twig') }}
                 {% endblock %}
             </div>
         </div>
@@ -22,11 +21,9 @@
 
             <div class="px-4 md:px-10 mx-auto w-full px-4">
                 <div class="flex flex-col justify-center items-center -mt-32 px-4">
-                    {{ include('components/dashboard/partner-details/_partner-details-show-permissions.html.twig') }}
                     <div class="flex flex-col md:flex-row flex-wrap justify-center items-center min-w-0 break-words w-full
                      mb-6 shadow-lg rounded bg-zinc-900 w-full pr-4 max-w-full flex-grow flex-1 m-10 p-5 rounded drop-shadow-lg">
                         <div class="xxl:w-2/12  xl:w-10/12 lg:w-6/12  w-full px-4">
-                            {{ include('components/dashboard/partner-details/_partner-detail-show-subsidiary.html.twig') }}
                         </div>
                     </div>
 

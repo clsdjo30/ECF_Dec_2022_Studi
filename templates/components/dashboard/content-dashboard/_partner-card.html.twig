@@ -66,8 +66,18 @@
                     </button>
                 </div>
 
-                {{ include('components/dashboard/content-dashboard/_modal-partner-global-permissions.html.twig') }}
-
+                    {% for permission in partner.globalPermissions %}
+                        {% if permission.isActive == true %}
+                <div class="font-extra-light  lowercase text-lg text-zinc-900 mb-3">
+                           <ul>
+                               <li>
+                                   <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F" ></i>
+                                   <span>{{ permission.permission.name }}</span>
+                               </li>
+                           </ul>
+                </div>
+                        {% endif %}
+                    {% endfor %}
                 <!--End of Permission Modal-->
 
                 <!-Affichage actif/inactif--->
@@ -87,7 +97,7 @@
                     </div>
                     <div>
                         <a
-                                href="{{ path('partner_show', {'id': 'partner.id'}) }}"
+                                href="{{ path('partner_show', {'id': 'partnerid'}) }}"
                                 class="border-2 border-orange-500/50 rounded px-5 py-1 text-xs text-zinc-900 hover:border-teal-500 hover:text-sm">
                             {% if partner.subsidiaries.count == 1 %}
                                 Voir la salle

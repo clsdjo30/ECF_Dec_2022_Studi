@@ -43,6 +43,7 @@ class PartnerController extends AbstractController
     }
 
     #[Route('/{id}', name: 'partner_show', methods: ['GET'])]
+    #[ParamConverter('id', options: ['id' => 'partner_id'])]
     public function show(Partner $partner): Response
     {
         return $this->render('partner/show.html.twig', [
@@ -51,7 +52,7 @@ class PartnerController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'partner_edit_permissions', methods: ['GET', 'POST'])]
-    #[ParamConverter('partner', options: ['id' => 'partner_id'])]
+    #[ParamConverter('id', options: ['id' => 'partner_id'])]
     public function editPermissions(Request $request, Partner $partner, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);

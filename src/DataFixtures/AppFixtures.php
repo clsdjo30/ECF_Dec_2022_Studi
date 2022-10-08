@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Partner;
+use App\Entity\PartnerPermission;
 use App\Entity\Permission;
 use App\Entity\Subsidiary;
 use App\Entity\TechTeam;
@@ -36,7 +37,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $partnerPermissions = [];
+        $permissions = [];
 
         $permissionValues = [
             "Gestion des Planning",
@@ -49,6 +50,15 @@ class AppFixtures extends Fixture
             "Livraison de produits d'entretien",
         ];
 
+            // on crée 8 permissions
+            foreach ($permissionValues as $permissionsValue) {
+                $perm = new Permission();
+                $perm->setName($permissionsValue);
+
+                $manager->persist($perm);
+
+                $permissions[] = $perm;
+            }
 
         // 1 membre de l'équipe tech
         $userTech = new User();
@@ -64,9 +74,7 @@ class AppFixtures extends Fixture
         $manager->persist($newTech);
 
 
-        for ($i = 0; $i < 20; $i++) {
-
-
+        for ($i = 0; $i < 2; $i++) {
             //compte franchise
             $partner = (new Partner())
                 ->setName($faker->company())
@@ -83,19 +91,72 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setFranchising($partner);
 
-            foreach ($permissionValues as $permissionValue) {
-                $perm = new Permission();
 
-                $perm->setName($permissionValue)
-                    ->setIsActive($faker->boolean());
+            //on ajoute 8 permission au partner
+            $globalPerm1 = (new PartnerPermission())
+                ->setPermission($permissions[0])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm1);
 
-                $partner->addGlobalPermission($perm);
+            $manager->persist($globalPerm1);
 
-                $manager->persist($perm);
-            }
+            $globalPerm2 = (new PartnerPermission())
+                ->setPermission($permissions[1])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm2);
+
+            $manager->persist($globalPerm1);
+
+            $globalPerm3 = (new PartnerPermission())
+                ->setPermission($permissions[2])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm3);
+
+            $manager->persist($globalPerm1);
+
+            $globalPerm4 = (new PartnerPermission())
+                ->setPermission($permissions[3])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm4);
+
+            $manager->persist($globalPerm1);
+
+            $globalPerm5 = (new PartnerPermission())
+                ->setPermission($permissions[4])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm5);
+
+            $globalPerm6 = (new PartnerPermission())
+                ->setPermission($permissions[5])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm6);
+
+            $manager->persist($globalPerm1);
+
+            $globalPerm7 = (new PartnerPermission())
+                ->setPermission($permissions[6])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm7);
+
+            $manager->persist($globalPerm1);
+
+            $globalPerm8 = (new PartnerPermission())
+                ->setPermission($permissions[7])
+                ->setIsActive($faker->boolean());
+            $partner->addGlobalPermission($globalPerm8);
+
+            $manager->persist($globalPerm1);
+            $manager->persist($globalPerm1);
+            $manager->persist($globalPerm2);
+            $manager->persist($globalPerm3);
+            $manager->persist($globalPerm4);
+            $manager->persist($globalPerm5);
+            $manager->persist($globalPerm6);
+            $manager->persist($globalPerm7);
 
 
-            for ($j = 0; $j <= random_int(1, 3); $j++) {
+
+            for ($k = 0; $k <= random_int(1, 3); $k++) {
 
                 //compte structure(Salle de sport)
                 $park = (new Subsidiary())
@@ -112,6 +173,7 @@ class AppFixtures extends Fixture
                     ->setCreatedAt($faker->dateTime())
                     ->setUpdatedAt($faker->dateTime());
 
+
                 //user Salle de sport pour id de connexion
                 $userSubsidiary = new User();
                 $userSubsidiary->setEmail($faker->companyEmail())
@@ -126,11 +188,7 @@ class AppFixtures extends Fixture
             }
             $manager->persist($partner);
             $manager->persist($userPartner);
-
-
         }
-
         $manager->flush();
-
     }
 }

@@ -29,9 +29,6 @@ class Permission
         return $this->name;
     }
 
-    #[ORM\ManyToMany(targetEntity: Subsidiary::class, mappedBy: 'roomPermissions')]
-    private Collection $subsidiaries;
-
     #[ORM\OneToMany(mappedBy: 'permission', targetEntity: PartnerPermission::class, orphanRemoval: true)]
     private Collection $partnerPermissions;
 
@@ -40,7 +37,6 @@ class Permission
 
     public function __construct()
     {
-        $this->subsidiaries = new ArrayCollection();
         $this->partnerPermissions = new ArrayCollection();
         $this->subsidiaryPermissions = new ArrayCollection();
     }
@@ -50,41 +46,14 @@ class Permission
         return $this->id;
     }
 
-    public function isIsActive(): ?bool
+    public function getName(): ?string
     {
-        return $this->isActive;
+        return $this->name;
     }
 
-    public function setIsActive(bool $isActive): self
+    public function setName(string $name): self
     {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Subsidiary>
-     */
-    public function getSubsidiaries(): Collection
-    {
-        return $this->subsidiaries;
-    }
-
-    public function addSubsidiary(Subsidiary $subsidiary): self
-    {
-        if (!$this->subsidiaries->contains($subsidiary)) {
-            $this->subsidiaries->add($subsidiary);
-            $subsidiary->addRoomPermission($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubsidiary(Subsidiary $subsidiary): self
-    {
-        if ($this->subsidiaries->removeElement($subsidiary)) {
-            $subsidiary->removeRoomPermission($this);
-        }
+        $this->name = $name;
 
         return $this;
     }

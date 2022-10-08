@@ -16,11 +16,11 @@ class PartnerPermission
     #[ORM\Column]
     private ?bool $isActive = null;
 
-    #[ORM\ManyToOne(inversedBy: 'globalPermissions')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'globalPermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Partner $partner = null;
 
-    #[ORM\ManyToOne(inversedBy: 'partnerPermissions')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'partnerPermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Permission $permission = null;
 
@@ -63,5 +63,10 @@ class PartnerPermission
         $this->permission = $permission;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getPermission()->getName();
     }
 }

@@ -46,16 +46,16 @@ class Partner
     #[ORM\OneToOne(mappedBy: 'franchising', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'partners')]
-    private Collection $globalPermissions;
-
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Subsidiary::class, orphanRemoval: true)]
     private Collection $subsidiaries;
 
+    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: PartnerPermission::class, orphanRemoval: true)]
+    private Collection $globalPermissions;
+
     public function __construct()
     {
-        $this->globalPermissions = new ArrayCollection();
         $this->subsidiaries = new ArrayCollection();
+        $this->globalPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,30 +141,6 @@ class Partner
     }
 
     /**
-     * @return Collection<int, Permission>
-     */
-    public function getGlobalPermissions(): Collection
-    {
-        return $this->globalPermissions;
-    }
-
-    public function addGlobalPermission(Permission $globalPermission): self
-    {
-        if (!$this->globalPermissions->contains($globalPermission)) {
-            $this->globalPermissions->add($globalPermission);
-        }
-
-        return $this;
-    }
-
-    public function removeGlobalPermission(Permission $globalPermission): self
-    {
-        $this->globalPermissions->removeElement($globalPermission);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Subsidiary>
      */
     public function getSubsidiaries(): Collection
@@ -188,6 +164,36 @@ class Partner
             // set the owning side to null (unless already changed)
             if ($subsidiary->getPartner() === $this) {
                 $subsidiary->setPartner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PartnerPermission>
+     */
+    public function getGlobalPermissions(): Collection
+    {
+        return $this->globalPermissions;
+    }
+
+    public function addGlobalPermission(PartnerPermission $globalPermission): self
+    {
+        if (!$this->globalPermissions->contains($globalPermission)) {
+            $this->globalPermissions->add($globalPermission);
+            $globalPermission->setPartner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGlobalPermission(PartnerPermission $globalPermission): self
+    {
+        if ($this->globalPermissions->removeElement($globalPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($globalPermission->getPartner() === $this) {
+                $globalPermission->setPartner(null);
             }
         }
 

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Partner;
+use App\Entity\PartnerPermission;
 use App\Entity\Permission;
 use App\Entity\Subsidiary;
 use App\Entity\TechTeam;
@@ -36,7 +37,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $partnerPermissions = [];
         $permissions = [];
 
         $permissionValues = [
@@ -52,8 +52,7 @@ class AppFixtures extends Fixture
             foreach ($permissionValues as $permissionValue) {
                 $perm = new Permission();
 
-                $perm->setName($permissionValue)
-                    ->setIsActive($faker->boolean());
+                $perm->setName($permissionValue);
 
                 $manager->persist($perm);
                 $permissions[] = $perm;
@@ -61,20 +60,22 @@ class AppFixtures extends Fixture
 
 
         // 1 membre de l'équipe tech
+        $newTech = (new TechTeam());
+
         $userTech = new User();
         $userTech->setEmail('tech@lions-fitness-club.fr')
             ->setPassword($this->encoder->hashPassword($userTech, 'password'))
             ->setRoles(['ROLE_TECH'])
             ->setFirstName('Jean')
-            ->setLastName('Bon');
+            ->setLastName('Bon')
+             ->setTechTeam($newTech);
 
-        $newTech = (new TechTeam())
-            ->setUser($userTech);
 
         $manager->persist($newTech);
+        $manager->persist($userTech);
 
 
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 3; $i++) {
 
 
             //compte franchise
@@ -93,15 +94,20 @@ class AppFixtures extends Fixture
                 ->setPassword($this->encoder->hashPassword($userPartner, 'password'))
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
+                ->setRoles(['ROLE_PARTNER'])
                 ->setFranchising($partner);
 
             foreach($permissions as $permission) {
-                $permission->setIsActive($faker->boolean());
+                $newPartnerPerm = (new PartnerPermission())
+                    ->setIsActive($faker->boolean())
+                    ->setPermission($permission)
+                   ;
+                $partner->addGlobalPermission($newPartnerPerm);
 
-                $partner->addGlobalPermission($permission);
 
-                $manager->persist($partner);
+                $manager->persist($newPartnerPerm);
             }
+
 
 
 
@@ -125,9 +131,10 @@ class AppFixtures extends Fixture
                 //user Salle de sport pour id de connexion
                 $userSubsidiary = new User();
                 $userSubsidiary->setEmail($faker->companyEmail())
-                    ->setPassword($this > $this->encoder->hashPassword($userSubsidiary, 'password'))
+                    ->setPassword($this->encoder->hashPassword($userSubsidiary, 'password'))
                     ->setFirstName($faker->firstName())
                     ->setLastName($faker->lastName())
+                    ->setRoles(['ROLE_SUBSIDIARY'])
                     ->setRoomManager($park);
 
 

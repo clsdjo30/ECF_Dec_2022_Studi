@@ -13,8 +13,7 @@ class TechTeam
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'techTeam', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(mappedBy: 'techTeam', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -29,6 +28,10 @@ class TechTeam
 
     public function setUser(User $user): self
     {
+        // set the owning side of the relation if necessary
+        if ($user->getTechTeam() !== $this) {
+            $user->setTechTeam($this);
+        }
         $this->user = $user;
 
         return $this;

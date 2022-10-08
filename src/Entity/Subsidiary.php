@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SubsidiaryRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -82,18 +83,18 @@ class Subsidiary
     #[ORM\JoinColumn(nullable: false)]
     private ?Partner $partner = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'subsidiaries')]
-    private Collection $roomPermissions;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?DateTimeInterface $updatedAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\OneToMany(mappedBy: 'subsidiary', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
+    private Collection $subsidiaryPermissions;
 
     public function __construct()
     {
-        $this->roomPermissions = new ArrayCollection();
+        $this->subsidiaryPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,50 +239,56 @@ class Subsidiary
         return $this;
     }
 
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getRoomPermissions(): Collection
-    {
-        return $this->roomPermissions;
-    }
-
-    public function addRoomPermission(Permission $roomPermission): self
-    {
-        if (!$this->roomPermissions->contains($roomPermission)) {
-            $this->roomPermissions->add($roomPermission);
-        }
-
-        return $this;
-    }
-
-    public function removeRoomPermission(Permission $roomPermission): self
-    {
-        $this->roomPermissions->removeElement($roomPermission);
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubsidiaryPermission>
+     */
+    public function getSubsidiaryPermissions(): Collection
+    {
+        return $this->subsidiaryPermissions;
+    }
+
+    public function addSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if (!$this->subsidiaryPermissions->contains($subsidiaryPermission)) {
+            $this->subsidiaryPermissions->add($subsidiaryPermission);
+            $subsidiaryPermission->setSubsidiary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if ($this->subsidiaryPermissions->removeElement($subsidiaryPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiaryPermission->getSubsidiary() === $this) {
+                $subsidiaryPermission->setSubsidiary(null);
+            }
+        }
 
         return $this;
     }

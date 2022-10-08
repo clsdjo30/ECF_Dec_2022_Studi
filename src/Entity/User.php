@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -56,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Subsidiary $roomManager;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?TechTeam $techTeam;
 
@@ -124,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials():void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -185,11 +185,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setTechTeam(TechTeam $techTeam): self
     {
-        // set the owning side of the relation if necessary
-        if ($techTeam->getUser() !== $this) {
-            $techTeam->setUser($this);
-        }
-
         $this->techTeam = $techTeam;
 
         return $this;

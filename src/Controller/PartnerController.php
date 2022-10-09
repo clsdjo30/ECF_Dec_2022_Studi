@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Partner;
+use App\Form\ModifyPartnerPermissionType;
 use App\Form\PartnerType;
 use App\Repository\PartnerRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,14 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/partner')]
 class PartnerController extends AbstractController
 {
-    #[Route('/', name: 'app_partner_index', methods: ['GET'])]
-    public function index(PartnerRepository $partnerRepository): Response
-    {
-        return $this->render('partner/index.html.twig', [
-            'partners' => $partnerRepository->findAll(),
-        ]);
-    }
-
     #[Route('/new', name: 'app_partner_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PartnerRepository $partnerRepository): Response
     {
@@ -61,6 +56,30 @@ class PartnerController extends AbstractController
         }
 
         return $this->renderForm('partner/edit.html.twig', [
+            'partner' => $partner,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/edit-permissions', name: 'partner_edit_permissions', methods: ['GET', 'POST'])]
+    public function editPermissions(Request $request, Partner $partner, EntityManagerInterface $manager): Response
+    {
+        $form = $this->createForm(ModifyPartnerPermissionType::class, $partner);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $partner = ($form->getData());
+
+            $manager->persist($partner);
+
+            $manager->flush();
+
+            $this->addFlash('success', 'Modifications de permissions enregistré ! ');
+            //TODO renvoyer vers la page du franchisé
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
+        }
+
+        return $this->renderForm('partner/edit-permissions.html.twig', [
             'partner' => $partner,
             'form' => $form,
         ]);

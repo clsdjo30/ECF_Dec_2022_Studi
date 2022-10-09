@@ -60,6 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?TechTeam $techTeam;
 
+    public function __toString(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

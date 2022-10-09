@@ -8,17 +8,14 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PartnerType extends AbstractType
+class ModifyPartnerPermissionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('globalPermissions',  CollectionType::class, [
+            ->add('globalPermissions', CollectionType::class, [
                 'entry_type' => PartnerPermissionType::class,
-                'by_reference' => false
-
-
-
+                'entry_options' => ['label' => false],
             ])
         ;
     }

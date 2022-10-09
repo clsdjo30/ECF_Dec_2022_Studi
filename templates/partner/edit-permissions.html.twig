@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Partner{% endblock %}
+
+{% block main %}
+    {{ include('components/dashboard/navigation/_mobil-navigation.html.twig') }}
+    {{ include('components/dashboard/navigation/_sidebar-menu-desktop.html.twig') }}
+
+    <div class="relative md:ml-60">
+        <!-- Header -->
+        <div class="bg-orange-500 md:pt-12 pb-32 pt-12 lg:h-max">
+            <div class="px-4 md:px-10 mx-auto my-auto w-full">
+                {% block mainTop %}
+                    {{ include('components/dashboard/content-dashboard/_modify-permissions.html.twig') }}
+                {% endblock %}
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+
+        {{ include('components/dashboard/content-dashboard/_footer.html.twig') }}
+    </div>
+{% endblock %}

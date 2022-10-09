@@ -29,7 +29,7 @@ class Partner
     #[ORM\Column(length: 15)]
     #[Assert\NotBlank]
     #[Assert\Length(
-        max: 10,
+        max: 15,
         maxMessage: 'Votre numero est trop long'
     )]
     private ?string $phoneNumber = null;

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TechTeamRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TechTeamRepository::class)]
 class TechTeam
@@ -14,6 +15,8 @@ class TechTeam
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'techTeam', cascade: ['persist', 'remove'])]
+    #[Assert\Type(type: User::class)]
+    #[Assert\Valid]
     private ?User $user = null;
 
     public function getId(): ?int

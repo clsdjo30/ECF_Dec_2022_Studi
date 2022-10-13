@@ -20,7 +20,7 @@ class Partner
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(
-        max: 20,
+        max: 25,
         maxMessage: 'Votre nom est trop long'
     )]
     #[Assert\NotBlank]

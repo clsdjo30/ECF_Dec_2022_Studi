@@ -7,6 +7,7 @@ use App\Entity\PartnerPermission;
 use App\Entity\Subsidiary;
 use App\Entity\User;
 use App\Form\ModifyPartnerPermissionType;
+use App\Form\PartnerEditType;
 use App\Form\PartnerType;
 use App\Repository\PartnerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -133,13 +134,15 @@ class PartnerController extends AbstractController
     #[Route('/{id}/edit', name: 'partner_edit', methods: ['GET', 'POST'])]
     public function editPartner(Request $request, Partner $partner, PartnerRepository $partnerRepository): Response
     {
-        $form = $this->createForm(PartnerType::class, $partner);
+        $form = $this->createForm(PartnerEditType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $partnerRepository->save($partner, true);
 
-            return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Les modifications du franchisé ont bien été enregistrées ! ');
+
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 
         return $this->renderForm('partner/edit.html.twig', [

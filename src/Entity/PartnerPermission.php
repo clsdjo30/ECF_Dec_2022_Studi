@@ -14,15 +14,13 @@ class PartnerPermission
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'globalPermissions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Partner $partner = null;
+    private ?Partner $partner;
 
     #[ORM\ManyToOne(inversedBy: 'partnerPermissions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Permission $permission = null;
+    private ?Permission $permission;
 
     #[ORM\Column]
-    private ?bool $isActive = null;
+    private ?bool $isActive;
 
     public function __toString(): string
     {

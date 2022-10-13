@@ -54,7 +54,7 @@ class Partner
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Subsidiary::class, orphanRemoval: true)]
     private Collection $subsidiaries;
 
-    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: PartnerPermission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: PartnerPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $globalPermissions;
 
     public function __construct()

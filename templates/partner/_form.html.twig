@@ -1,47 +1,10 @@
-{% import _self as formMacros %}
-
-<!--MACRO POUR AJOUT PERMISSION-->
-{% macro printPermissionRow(permissionForm) %}
-
-
-    <li class="flex justify-between items-center">
-
-        {{ form_label(permissionForm.name, 'Choisissez une option', {
-            'label_attr': {
-                'class': 'italic text-base text-orange-400 mr-10 '
-            }
-        }) }}
-        {{ form_widget(permissionForm.name, {
-            'attr': {
-                'class': 'input-partner '
-
-            }
-        }) }}
-
-    </li>
-    <li class="flex justify-end items-center mt-2">
-        {{ form_label(permissionForm.isActive, "Activer l'option ?", {
-            'label_attr': {
-                'class': 'italic text-base  text-orange-400 mr-20'
-            }
-        }) }}
-        {{ form_widget(permissionForm.isActive,{
-            'attr': {
-                'class': 'checkbox flex'
-            }
-        } ) }}
-    </li>
-
-{% endmacro %}
-
-
 {{ form_start(form) }}
-
 
 
 {{ form_row(form._token) }}
 <div class="flex flex-col justify-center">
     <h3 class="text-orange-500 text-xl font-bold text-center mb-5 capitalize">Création du franchisé</h3>
+        <h4 class="text-orange-700 text-xl font-semibold mb-3 py-5">Informations du franchisé</h4>
     <div class="flex justify-between items-center mb-5 ">
         <div class="flex flex-col w-5/12">
             {{ form_label(form.user.firstName, 'Prénom', {
@@ -98,7 +61,7 @@
         <hr>
     </div>
     <div class="flex flex-col justify-between my-5">
-        <h4 class="text-orange-500 text-xl font-semibold mb-3 text-center">Identifiants de connexion du Franchisé</h4>
+        <h4 class="text-orange-700 text-xl font-semibold mb-3">Identifiants de connexion du Franchisé</h4>
         <div class="flex flex-col w-8/12 mb-3">
             {{ form_label(form.user.email , 'Email', {
                 'label_attr': {
@@ -125,14 +88,14 @@
             } ) }}
         </div>
 
-        <div class="flex justify-between items-center w-full mb-5">
-            {{ form_label(form.isActive, 'Activé le Franchisé', {
+        <div class="flex items-center w-full mb-5">
+            {{ form_label(form.isActive, 'Activé le Franchisé ?', {
                 'label_attr': {
                     'class': 'text-base text-orange-400',
                 },
 
             }) }}
-            <div class="flex form-check form-switch w-4/12 -ml-20">
+            <div class="flex form-check form-switch w-4/12 ml-10">
                 {{ form_widget(form.isActive,{
                     'attr': {
                         'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-teal-400 bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
@@ -148,34 +111,21 @@
         <hr>
     </div>
 
-    <div class=" mt-5 w-full">
-        <h3 class="text-orange-500 text-xl font-semibold text-center mb-5 capitalize">
-            Ajouter les permissions
-        </h3>
+
+    {{ include('partner/_form-partner-permissions.html.twig') }}
+
+    <div class="w-full">
+
         <div class="w-full mb-3 ">
-
-
-            <hr>
+            {{ include('partner/_form-subsidiary.html.twig') }}
         </div>
-        <div class="w-full">
-
-            <div class="w-full mb-3 ">
-            </div>
-        </div>
-
-        <div class="w-full">
-
-            <div class="w-full mb-3 ">
-                {{ include('partner/_form-subsidiary.html.twig') }}
-            </div>
-        </div>
-        <div class="flex justify-center items-center mt-5">
-            <button type="submit"
-                    class="w-6/12 px-8 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize"
-            >
-                Enregistrer
-            </button>
-        </div>
+    </div>
+    <div class="flex justify-center items-center mt-5">
+        <button type="submit"
+                class="w-6/12 px-8 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize"
+        >
+            Enregistrer
+        </button>
     </div>
 </div>
 

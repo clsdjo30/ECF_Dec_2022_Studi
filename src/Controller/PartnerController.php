@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Partner;
+use App\Entity\PartnerPermission;
 use App\Entity\Subsidiary;
 use App\Entity\User;
 use App\Form\ModifyPartnerPermissionType;
@@ -33,8 +34,10 @@ class PartnerController extends AbstractController
         $partner = new Partner();
         $userPartner = new User();
         $partner->setUser($userPartner);
-        //On ajoute les permissions globale
 
+        //On ajoute les permissions globale
+        $partnerPermission = new PartnerPermission();
+        $partner->addGlobalPermission($partnerPermission);
 
         $subsidiary = new Subsidiary();
         $userRoomManager = new User();
@@ -45,6 +48,24 @@ class PartnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //on enregistre la date de creation
+            $partner = ($form->getData())
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime());
+
+            $partnerPermission->setIsActive(true);
+            //on hash le mot de passe du partner
+            $partnerPlainTextPassword = $userPartner->getPassword();
+            $partnerHashedPassword = $passwordHasher->hashPassword(
+                $userPartner,
+                $partnerPlainTextPassword
+            );
+
+            //On enregistre le user partner
+            $userPartner
+                ->setPassword($partnerHashedPassword)
+                ->setRoles(["ROLE_PARTNER"]);
 
             //on charge le logo de la salle
             /** @var UploadedFile $logoUrl */
@@ -65,20 +86,7 @@ class PartnerController extends AbstractController
                     $this->addFlash('error', 'Un Problème est survenu lors du téléchargement de votre fichier ! ');
                 }
                 $subsidiary->setLogoUrl($newFilename);
-            }
-            //on hash le mot de passe du partner
-            $partnerPlainTextPassword = $userPartner->getPassword();
-            $partnerHashedPassword = $passwordHasher->hashPassword(
-                $userPartner,
-                $partnerPlainTextPassword
-            );
-
-            //On enregistre le user partner
-            $userPartner
-                ->setPassword($partnerHashedPassword)
-                ->setRoles(["ROLE_PARTNER"]);
-
-            //on hash le mot de passe du manager
+            }//on hash le mot de passe du manager
             $managerPlainTextPassword = $userRoomManager->getPassword();
             $managerHashedPassword = $passwordHasher->hashPassword(
                 $userPartner,
@@ -92,18 +100,14 @@ class PartnerController extends AbstractController
 
             //on enregistre la date de creation
             $subsidiary->setCreatedAt(new DateTime())
-                    ->setUpdatedAt(new DateTime());
-
-            //on enregistre la date de creation
-            $partner = ($form->getData())
-                ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime());
 
 
-            $manager->persist($subsidiary);
             $manager->persist($userPartner);
-            $manager->persist($userRoomManager);
+            $manager->persist($partnerPermission);
             $manager->persist($partner);
+            $manager->persist($subsidiary);
+            $manager->persist($userRoomManager);
 
             $manager->flush();
 

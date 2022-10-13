@@ -3,9 +3,11 @@
         <div class="relative  w-full pr-4 max-w-full flex-grow flex-1 mb-3 p-4">
             {% for subsidform in form.subsidiaries %}
             <div class="flex flex-col">
-                <h3 class="text-orange-500 text-xl font-bold text-center mb-3">Création de la Salle de sport</h3>
+                <h3 class="text-orange-500 text-xl font-bold text-center mb-3 capitalize py-5">Création de la Salle de
+                    sport</h3>
                 <!-- Subsidiary Name -->
                 <div class="fle flex-col justify-between items-center">
+                    <h4 class="text-orange-600 text-xl font-semibold mb-3">Informations de la salle</h4>
                     <div class="flex justify-between items-center mb-3 ">
                         <div class="flex flex-col w-6/12">
                             {{ form_label(subsidform.name, 'Nom de la salle', {
@@ -34,7 +36,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col w-full">
-                    <!-- Subsidiary logo -->
+                        <!-- Subsidiary logo -->
                         {{ form_label(form.logo, 'Logo de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 ml-3 pb-2'
@@ -47,7 +49,7 @@
                         } ) }}
                     </div>
                     <div class="flex flex-col w-full mt-3">
-                    <!-- Subsidiary website -->
+                        <!-- Subsidiary website -->
                         {{ form_label(subsidform.url, 'Site internet de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 pb-2'
@@ -61,7 +63,7 @@
                     </div>
 
                     <div class="flex flex-col w-full mt-3">
-                    <!-- Subsidiary Address -->
+                        <!-- Subsidiary Address -->
                         {{ form_label(subsidform.address, 'Adresse', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 ml-3 pb-2'
@@ -74,7 +76,7 @@
                         } ) }}
                     </div>
                     <div class="flex justify-between items-center mt-3">
-                    <!-- Subsidiary city -->
+                        <!-- Subsidiary city -->
                         <div class="flex flex-col w-4/12">
                             {{ form_label(subsidform.city, 'Ville', {
                                 'label_attr': {
@@ -101,7 +103,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col w-full mt-3">
-                    <!-- Subsidiary Description -->
+                        <!-- Subsidiary Description -->
                         {{ form_label(subsidform.description, 'Déscription de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 pb-2'
@@ -114,14 +116,14 @@
                         } ) }}
                     </div>
 
-                    <div class="flex justify-between items-center w-full mt-3 mb-6 ">
+                    <div class="flex items-center w-full mt-3 mb-6 ">
                         {{ form_label(subsidform.isActive, 'La salle est en activitée', {
                             'label_attr': {
                                 'class': 'text-base text-orange-400',
                             },
 
                         }) }}
-                        <div class="flex form-check form-switch w-4/12">
+                        <div class="flex form-check form-switch w-4/12 ml-10">
                             {{ form_widget(subsidform.isActive,{
                                 'attr': {
                                     'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-teal-400 bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
@@ -136,13 +138,13 @@
                 </div>
                 <hr>
                 <div>
-                    <h3 class="text-orange-500 text-xl font-bold text-center my-8">Création du Manager de Salle</h3>
+                    <h3 class="text-orange-600 text-xl font-bold text-center my-8">Création du Manager de Salle</h3>
                     <!--Manager  Full Name-->
-                    <div class="fle flex-col justify-between items-center">
-                        <div class="flex justify-between items-center mb-5 ">
-                            <div class="flex flex-col w-5/12">
-.
-
+                    <div class="flex-col justify-between items-center">
+                        <div class="flex flex-col justify-between my-5 ">
+                        <h4 class="text-orange-600 text-xl font-semibold">Informations du manager</h4>
+                            <div class="flex flex-col w-8/12">
+                                .
                                 {{ form_label(subsidform.user.firstName, 'Prénom du Manager', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
@@ -153,9 +155,8 @@
                                         'class': 'input-partner '
                                     }
                                 }) }}
-
                             </div>
-                            <div class="flex flex-col w-5/12">
+                            <div class="flex flex-col w-8/12">
                                 {{ form_label(subsidform.user.lastName, 'Nom du Manager', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
@@ -169,7 +170,8 @@
                             </div>
                         </div>
                         <div class="flex flex-col justify-between my-5">
-                            <h4 class="text-orange-500 text-xl font-semibold mb-3 text-center">Identifiants de connexion du Manager</h4>
+                            <h4 class="text-orange-600 text-xl font-semibold mb-3">Identifiants de connexion du
+                                Manager</h4>
                             <div class="flex flex-col w-8/12 mb-3">
                                 {{ form_label(subsidform.user.email , 'Email', {
                                     'label_attr': {
@@ -195,15 +197,15 @@
                                     }
                                 } ) }}
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-{% endfor %}
+    {% endfor %}
 </div>
 
 

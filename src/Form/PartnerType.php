@@ -31,7 +31,6 @@ class PartnerType extends AbstractType
             ])
             ->add('subsidiaries', CollectionType::class, [
                 'entry_type' => SubsidiaryType::class,
-                'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'allow_extra_fields' => true
@@ -54,6 +53,16 @@ class PartnerType extends AbstractType
                         'mimeTypesMessage' => 'Merci de téléchargez une image valide',
                     ]),
                 ],
+            ])
+            ->add('globalPermissions', CollectionType::class, [
+                'entry_type' => PartnerPermissionType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference'=> false,
+
+
+
             ])
 
            ;

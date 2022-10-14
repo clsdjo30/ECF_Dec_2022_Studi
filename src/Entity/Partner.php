@@ -6,8 +6,8 @@ use App\Repository\PartnerRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PartnerRepository::class)]
@@ -20,7 +20,7 @@ class Partner
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(
-        max: 20,
+        max: 25,
         maxMessage: 'Votre nom est trop long'
     )]
     #[Assert\NotBlank]
@@ -29,7 +29,7 @@ class Partner
     #[ORM\Column(length: 15)]
     #[Assert\NotBlank]
     #[Assert\Length(
-        max: 10,
+        max: 15,
         maxMessage: 'Votre numero est trop long'
     )]
     private ?string $phoneNumber = null;
@@ -37,25 +37,35 @@ class Partner
     #[ORM\Column]
     private ?bool $isActive = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: 'datetime')]
+    #[Timestampable(on: 'create')]
     private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: 'datetime')]
+    #[Timestampable(on: 'update')]
     private ?DateTimeInterface $updatedAt = null;
 
+
     #[ORM\OneToOne(mappedBy: 'franchising', cascade: ['persist', 'remove'])]
+    #[Assert\Type(type: User::class)]
+    #[Assert\Valid]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Subsidiary::class, orphanRemoval: true)]
     private Collection $subsidiaries;
 
-    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: PartnerPermission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: PartnerPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $globalPermissions;
 
     public function __construct()
     {
         $this->subsidiaries = new ArrayCollection();
         $this->globalPermissions = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

@@ -26,9 +26,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private string $password;
 
@@ -49,16 +46,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastName = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Partner $franchising;
+    #[Assert\Type(type: Partner::class)]
+    #[Assert\Valid]
+    private ?Partner $franchising = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Subsidiary $roomManager;
+    #[Assert\Type(type: Subsidiary::class)]
+    #[Assert\Valid]
+    private ?Subsidiary $roomManager =null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?TechTeam $techTeam;
+    #[Assert\Type(type: TechTeam::class)]
+    #[Assert\Valid]
+    private ?TechTeam $techTeam =null;
+
+    public function __toString(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
 
     public function getId(): ?int
     {

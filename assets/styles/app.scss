@@ -2,7 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* RaleWay Font*/
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,400&display=swap');
-/* Rokkitt Font*/
-@import url('https://fonts.googleapis.com/css2?family=Rokkitt:wght@100;200;400;800;900&display=swap');
+@layer components {
+
+  .input-partner {
+    @apply
+    form-control
+    block
+    w-full
+    px-3
+    py-1.5
+    text-base
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+    m-0
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+
+  }
+}

@@ -1,0 +1,65 @@
+{% import _self as formMacros %}
+
+<!--MACRO POUR AJOUT PERMISSION-->
+{% macro printPermissionRow(permissionForm) %}
+
+
+    <li class="permission-info w-full  form-check form-switch flex justify-start items-center mb-3 mt-5">
+
+        {{ form_widget(permissionForm.permission, {
+            'attr': {
+                'class': 'rounded  border-solid accent-pink-500 w-5/12 pr-10'
+
+            }
+        }) }}
+        <span class="flex form-check form-switch w-4/12">
+
+            {{ form_label(permissionForm.isActive, "Activer l'option ?", {
+                'label_attr': {
+                    'class': 'italic text-base  text-orange-400 mr-20'
+                }
+            }) }}
+            {{ form_widget(permissionForm.isActive,{
+                'attr': {
+                    'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
+
+                },
+                'type' :"checkbox",
+                'role' :"switch",
+                'id' :"flexSwitchCheckChecked",
+            } ) }}
+        </span>
+    </li>
+    <hr>
+
+{% endmacro %}
+
+
+    <h3 class="text-orange-500 text-xl font-semibold text-center mb-5 capitalize py-5">
+        Ajouter les permissions incluses dans le contrat de franchise
+    </h3>
+    <div class="w-full mb-3 ">
+        <div class="w-full flex justify-end items-center">
+            <button type="button"
+                    class="js-btn-new flex items-center justify-center w-4/12 px-4 py-1 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
+                    data-collection-holder-class="globalPermissions">
+                <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
+                Ajouter des options
+            </button>
+        </div>
+        <div class="flex justify-start items-center">
+            <ul
+                    class="globalPermissions flex flex-col justify-start w-full"
+                    data-prototype="{{ formMacros.printPermissionRow(form.globalPermissions.vars.prototype)|e('html_attr') }}"
+                    data_index="{{ form.globalPermissions|length > 0 ? form.globalPermissions|last.vars.name + 1 : 0 }}"
+            >
+
+                {% for permissionForm in form.globalPermissions %}
+                    {{ formMacros.printPermissionRow(permissionForm) }}
+                {% endfor %}
+
+            </ul>
+        </div>
+
+
+    </div>

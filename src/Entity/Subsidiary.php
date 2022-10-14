@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubsidiaryRepository::class)]
@@ -27,12 +28,11 @@ class Subsidiary
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    private ?string $logoUrl = null;
+    private ?string $logoUrl;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    private ?string $url = null;
+    private ?string $url;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\Length(
@@ -77,20 +77,30 @@ class Subsidiary
     private ?bool $isActive = null;
 
     #[ORM\OneToOne(mappedBy: 'roomManager', cascade: ['persist', 'remove'])]
+    #[Assert\Type(type: User::class)]
+    #[Assert\Valid]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'subsidiaries')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Partner $partner = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: 'datetime')]
+    #[Timestampable(on: 'create')]
     private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: 'datetime')]
+    #[Timestampable(on: 'update')]
     private ?DateTimeInterface $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'subsidiary', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
     private Collection $subsidiaryPermissions;
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
 
     public function __construct()
     {

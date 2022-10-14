@@ -1,0 +1,73 @@
+{% import _self as formMacros %}
+
+<!--MACRO POUR AJOUT PERMISSION-->
+{% macro printPermissionRow(permissionForm) %}
+    <li class="permission-info w-full  form-check form-switch flex justify-start items-center mb-3 mt-5">
+
+        {{ form_widget(permissionForm.permission, {
+            'attr': {
+                'class': 'rounded  border-solid accent-pink-500 w-5/12 pr-10'
+
+            }
+        }) }}
+        <span class="flex form-check form-switch w-4/12">
+
+            {{ form_label(permissionForm.isActive, "Activer l'option ?", {
+                'label_attr': {
+                    'class': 'italic text-base  text-orange-400 mr-20'
+                }
+            }) }}
+            {{ form_widget(permissionForm.isActive,{
+                'attr': {
+                    'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
+
+                },
+                'type' :"checkbox",
+                'role' :"switch",
+                'id' :"flexSwitchCheckChecked",
+            } ) }}
+        </span>
+    </li>
+    <hr>
+{% endmacro %}
+
+<div class="flex justify-center items-center  bg-teal-400 rounded-lg shadow-2xl py-20 px-10">
+    <div class="flex flex-col items-center bg-white rounded shadow p-10 w-full">
+
+        <h1 class="text-center text-zinc-900 uppercase font-bold text-lg pb-12">
+            Gestion des Permissions
+        </h1>
+        <div class="w-full px-28">
+
+            {{ form_start(form) }}
+            <div class="flex justify-start items-center">
+                <ul
+                        class="globalPermissions flex flex-col justify-start w-full"
+                        data-prototype="{{ formMacros.printPermissionRow(form.globalPermissions.vars.prototype)|e('html_attr') }}"
+                        data_index="{{ form.globalPermissions|length > 0 ? form.globalPermissions|last.vars.name + 1 : 0 }}"
+                >
+
+                    {% for permissionForm in form.globalPermissions %}
+                        {{ formMacros.printPermissionRow(permissionForm) }}
+                    {% endfor %}
+
+                </ul>
+            </div>
+            <div class="w-full flex justify-end items-center mb-5 mt-8">
+
+                <button type="button"
+                        class="js-btn-new flex items-center justify-center w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
+                        data-collection-holder-class="globalPermissions">
+                    <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
+                    Ajouter des options
+                </button>
+            </div>
+            <div class="w-full flex justify-end items-center mb-5 mt-8">
+                <button class="btn w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize">
+                    {{ button_label|default('Enregistrer') }}
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

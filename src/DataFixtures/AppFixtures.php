@@ -120,7 +120,7 @@ class AppFixtures extends Fixture
                     ->setCity($faker->city())
                     ->setPostalCode($faker->randomNumber(5))
                     ->setDescription($faker->realText(250))
-                    ->setLogoUrl($faker->url())
+                    ->setLogoUrl($faker->image(null, 600, 600, 'animals', true, true, 'cats', true, 'jpg'))
                     ->setUrl($faker->url())
                     ->setPhoneNumber($faker->phoneNumber())
                     ->setIsActive($faker->boolean())

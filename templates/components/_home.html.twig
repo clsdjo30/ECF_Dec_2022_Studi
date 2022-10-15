@@ -20,30 +20,36 @@
                 <h2 class="font-title font-bold text-6xl text-orange-400 mb-4 -mt-10">Lions Fitness Club</h2>
 
                 <div class="flex flex-col justify-between items-center">
+                    {% if is_granted('ROLE_TECH') %}
                     <a
                             class="inline-block w-60 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out mb-3 hover:text-teal-400"
-                            href="#"
+                            href="{{ path('partner') }}"
                             role="button"
                             data-mdb-ripple="true"
                             data-mdb-ripple-color="light"
-                    >Espace Partenaire</a
+                    >Espace team</a
                     >
-                    <a
-                            class="inline-block w-60  py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out mb-3 hover:text-teal-400"
-                            href="#!"
-                            role="button"
-                            data-mdb-ripple="true"
-                            data-mdb-ripple-color="light"
-                    >Espace Salle</a
-                    >
-                    <a
-                            class="inline-block w-60 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out hover:text-teal-400"
-                            href="{{ path('dashboard') }}"
-                            role="button"
-                            data-mdb-ripple="true"
-                            data-mdb-ripple-color="light"
-                    >Espace Team </a
-                    >
+                    {% elseif is_granted('ROLE_PARTNER') %}
+                        <a
+                                class="inline-block w-60  py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out mb-3 hover:text-teal-400"
+                                href="{{ path('partner_show', {id: app.user.franchising.id}) }}"
+                                role="button"
+                                data-mdb-ripple="true"
+                                data-mdb-ripple-color="light"
+                        >Espace Franchisé</a
+                        >
+
+                        {% elseif is_granted('ROLE_STRUCTURE') %}
+
+                        <a
+                                class="inline-block w-60 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out hover:text-teal-400"
+                                href="{{ path('login') }}"
+                                role="button"
+                                data-mdb-ripple="true"
+                                data-mdb-ripple-color="light"
+                        >Espace Manager</a>
+                        {% endif %}
+
                 </div>
             </div>
         </div>

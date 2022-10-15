@@ -21,8 +21,11 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        protected Security $security)
     {
+        $this->security = $security;
     }
 
     public function authenticate(Request $request): Passport
@@ -42,10 +45,13 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-         return new RedirectResponse($this->urlGenerator->generate('home'));
+
+
+         return new RedirectResponse($this->urlGenerator->generate('choose-road'));
 
     }
 

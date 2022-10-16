@@ -15,11 +15,6 @@
             <div class="px-4 md:px-10 mx-auto my-auto w-full">
 
                 {% block mainTop %}
-                    {% for message in app.flashes('success') %}
-                        <div class="alert alert-success">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
                     {{ include('components/dashboard/partner-details/_top-partner-detail.html.twig') }}
                 {% endblock %}
             </div>

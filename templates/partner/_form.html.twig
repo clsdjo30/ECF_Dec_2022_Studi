@@ -2,11 +2,12 @@
 
 
 {{ form_row(form._token) }}
+
 <div class="flex flex-col justify-center">
     <h3 class="text-orange-500 text-xl font-bold text-center mb-5 capitalize">Création du franchisé</h3>
         <h4 class="text-orange-700 text-xl font-semibold mb-3 py-5">Informations du franchisé</h4>
-    <div class="flex justify-between items-center mb-5 ">
-        <div class="flex flex-col w-5/12">
+    <div class="flex flex-col justify-between items-center mb-5 lg:flex-row">
+        <div class="flex flex-col   lg:w-5/12 w-full mb-3 lg:mb-0">
             {{ form_label(form.user.firstName, 'Prénom', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -17,9 +18,12 @@
                     'class': 'input-partner '
                 }
             }) }}
+            <span class="form-error">
+                {{ form_errors(form.user.firstName) }}
+            </span>
 
         </div>
-        <div class="flex flex-col w-6/12">
+        <div class="flex flex-col  lg:w-6/12 w-full">
             {{ form_label(form.user.lastName, 'Nom de famille', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -30,10 +34,13 @@
                     'class': 'input-partner '
                 }
             } ) }}
+            <div class="form-error">
+                {{ form_errors(form.user.lastName) }}
+            </div>
         </div>
     </div>
-    <div class="flex justify-between items-center mb-5">
-        <div class="flex flex-col w-6/12">
+    <div class="flex flex-col justify-between items-center mb-5 lg:flex-row">
+        <div class="flex flex-col lg:w-6/12 w-full mb-3 lg:mb-0 ">
             {{ form_label(form.name, 'Nom de Société', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -44,9 +51,12 @@
                     'class': 'input-partner '
                 }
             }) }}
+            <span class="form-error">
+                {{ form_errors(form.name) }}
+            </span>
 
         </div>
-        <div class="flex flex-col w-4/12 mb-5">
+        <div class="flex flex-col lg:w-4/12  w-full">
             {{ form_label(form.phoneNumber, 'Numéro de téléphone', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -57,12 +67,15 @@
                     'class': 'input-partner '
                 }
             }) }}
+            <span class="form-error">
+                {{ form_errors(form.phoneNumber) }}
+            </span>
         </div>
         <hr>
     </div>
     <div class="flex flex-col justify-between my-5">
         <h4 class="text-orange-700 text-xl font-semibold mb-3">Identifiants de connexion du Franchisé</h4>
-        <div class="flex flex-col w-8/12 mb-3">
+        <div class="flex flex-col w-full lg:w-8/12 mb-3">
             {{ form_label(form.user.email , 'Email', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -75,7 +88,7 @@
             }) }}
 
         </div>
-        <div class="flex flex-col w-8/12 mb-3">
+        <div class="flex flex-col w-full lg:w-8/12 mb-3">
             {{ form_label(form.user.password, 'Mot de passe provisoire', {
                 'label_attr': {
                     'class': 'italic text-sm text-tail-400 ml-3'
@@ -114,12 +127,6 @@
 
     {{ include('partner/_form-partner-permissions.html.twig') }}
 
-    <div class="w-full">
-
-        <div class="w-full mb-3 ">
-            {{ include('partner/_form-subsidiary.html.twig') }}
-        </div>
-    </div>
     <div class="flex justify-center items-center mt-5">
         <button type="submit"
                 class="w-6/12 px-8 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize"

@@ -42,7 +42,6 @@ class PartnerController extends AbstractController
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $passwordHasher,
-        FileUploader $fileUploader
     ): Response {
         //On crée le formulaire pour le franchisé
         $partner = new Partner();
@@ -52,11 +51,6 @@ class PartnerController extends AbstractController
         //On ajoute les permissions globales
         $partnerPermission = new PartnerPermission();
         $partner->addGlobalPermission($partnerPermission);
-
-        $subsidiary = new Subsidiary();
-        $userRoomManager = new User();
-        $subsidiary->setUser($userRoomManager);
-        $partner->addSubsidiary($subsidiary);
 
         $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
@@ -81,41 +75,9 @@ class PartnerController extends AbstractController
                 ->setPassword($partnerHashedPassword)
                 ->setRoles(["ROLE_PARTNER"]);
 
-            //on charge le logo de la salle
-            /** @var UploadedFile $logoPartner */
-            $logoPartner = $form->get('logo')->getData();
-
-            if ($logoPartner) {
-                $newFileName = $fileUploader->upload($logoPartner);
-                $subsidiary->setLogoUrl($newFileName);
-            }
-
-            //on crypte le mot de passe du manager
-            $managerPlainTextPassword = $userRoomManager->getPassword();
-            $managerHashedPassword = $passwordHasher->hashPassword(
-                $userPartner,
-                $managerPlainTextPassword
-            );
-
-            //On enregistre le user subsidiary
-            $userRoomManager
-                ->setPassword($managerHashedPassword)
-                ->setRoles(["ROLE_SUBSIDIARY"]);
-            $manager->persist($userRoomManager);
-
-
-
-            //on enregistre la date de creation
-            $subsidiary->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime())
-                ->setUser($userRoomManager);
-
-
             $manager->persist($userPartner);
             $manager->persist($partnerPermission);
             $manager->persist($partner);
-            $manager->persist($subsidiary);
-
             $manager->flush();
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
@@ -159,24 +121,13 @@ class PartnerController extends AbstractController
     public function editPartner(
         Request $request,
         Partner $partner,
-        PartnerRepository $partnerRepository,
-        FileUploader $fileUploader,
-        Subsidiary $subsidiary,
-        EntityManagerInterface $manager
+        PartnerRepository $partnerRepository
     ): Response
     {
         $form = $this->createForm(PartnerEditType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $logoUrl */
-            $logo = $form->get('logo')->getData();
-
-            if ($logo) {
-                $newFileName = $fileUploader->upload($logo);
-                $subsidiary->setLogoUrl($newFileName);
-            }
-            $manager->persist($subsidiary);
             $partnerRepository->save($partner, true);
 
             $this->addFlash('success', 'Les modifications du franchisé ont bien été enregistrées ! ');
@@ -209,7 +160,7 @@ class PartnerController extends AbstractController
 
             $this->addFlash('success', 'Modifications de permissions enregistré ! ');
 
-            //TODO renvoyer vers la page du franchisé
+
             return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 

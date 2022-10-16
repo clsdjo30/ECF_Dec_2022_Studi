@@ -28,6 +28,7 @@ class Subsidiary
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $logoUrl;
 
     #[ORM\Column(length: 255)]

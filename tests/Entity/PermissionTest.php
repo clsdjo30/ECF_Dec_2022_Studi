@@ -14,7 +14,7 @@ class PermissionTest extends KernelTestCase
     {
         return (new Permission())
             ->setName('permission')
-            ->setIsActive(true);
+          ;
     }
 
     /**
@@ -40,16 +40,6 @@ class PermissionTest extends KernelTestCase
     {
         $this->assertHasErrors($this->getEntity()->setName('Ceci va être une permission beaucoup beaucoup trop longue'), 1);
     }
-
-    /**
-     * @throws Exception
-     */
-    public function testBlankIsActivePermissionEntity(): void
-    {
-        $this->assertHasErrors($this->getEntity()->setIsActive(''), 1);
-    }
-
-
 
     /**
      * @throws Exception

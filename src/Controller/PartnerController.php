@@ -11,6 +11,7 @@ use App\Form\PartnerEditType;
 use App\Form\PartnerType;
 use App\Form\SubsidiaryNewType;
 use App\Repository\PartnerRepository;
+use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -100,23 +101,26 @@ class PartnerController extends AbstractController
             $userRoomManager
                 ->setPassword($managerHashedPassword)
                 ->setRoles(["ROLE_SUBSIDIARY"]);
+            $manager->persist($userRoomManager);
+
+
 
             //on enregistre la date de creation
             $subsidiary->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime());
+                ->setUpdatedAt(new DateTime())
+                ->setUser($userRoomManager);
 
 
             $manager->persist($userPartner);
             $manager->persist($partnerPermission);
             $manager->persist($partner);
             $manager->persist($subsidiary);
-            $manager->persist($userRoomManager);
 
             $manager->flush();
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
-            return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partner/new.html.twig', [
@@ -125,13 +129,29 @@ class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'partner_show', methods: ['GET']), isGranted('ROLE_STRUCTURE')]
+    #[Route('/{id}', name: 'partner_show', methods: ['GET']), isGranted('ROLE_PARTNER')]
     public function show(Partner $partner): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render('partner/show.html.twig', [
             'partner' => $partner,
+        ]);
+    }
+
+    #[Route('/subsidiary/{id}', name: 'subsidiary_show', methods: ['GET']), isGranted('ROLE_SUBSIDIARY')]
+    public function showSubsidiary( SubsidiaryRepository $subsidiaryRepository ): Response
+    {
+        $user = $this->getUser();
+
+        $sub = $subsidiaryRepository->findOneBy([
+           'user' => $user
+        ]);
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('partner/show.html.twig', [
+            'subsidiary' => $sub
         ]);
     }
 
@@ -252,7 +272,7 @@ class PartnerController extends AbstractController
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
-            return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partner/new-subsidiary.html.twig', [

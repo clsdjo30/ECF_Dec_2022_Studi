@@ -12,8 +12,8 @@ security:
     role_hierarchy:
         ROLE_ADMIN: [ ROLE_TECH, ROLE_ALLOWED_TO_SWITCHED ]
         ROLE_TECH: [ ROLE_PARTNER, ROLE_TECH ]
-        ROLE_PARTNER: [ ROLE_STRUCTURE, ROLE_PARTNER ]
-        ROLE_STRUCTURE: [ ROLE_USER, ROLE_STRUCTURE ]
+        ROLE_PARTNER: [ ROLE_SUBSIDIARY, ROLE_PARTNER ]
+        ROLE_SUBSIDIARY: [ ROLE_USER, ROLE_SUBSIDIARY ]
 
     firewalls:
         dev:
@@ -41,9 +41,8 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
-    - { path: ^/dashboard, roles: ROLE_TECH }
-    - { path: ^/partner, roles: ROLE_STRUCTURE }
+
+
 
 
 

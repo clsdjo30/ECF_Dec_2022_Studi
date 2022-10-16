@@ -44,8 +44,7 @@
     </div>
     {% elseif is_granted('ROLE_PARTNER') %}
         {{ include('components/dashboard/partner-view/partner-details.html.twig') }}
-    {% elseif is_granted('ROLE_STRUCTURE')%}
-    <--Vue pour les Salle de sport-->
+    {% elseif is_granted('ROLE_SUBSIDIARY')%}
         {{ include('components/dashboard/subsidiary-view/subsidiary-details.html.twig') }}
     {% endif %}
 {% endblock %}

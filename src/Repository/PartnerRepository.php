@@ -39,6 +39,21 @@ class PartnerRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Partner[] Returns an array of Subsidiary objects
+     */
+    public function findByUser($id): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.subsidiaries', 'u' )
+            ->from('user', 'u')
+            ->where('p.user = :u.id')
+            ->setParameter('u.id', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Partner[] Returns an array of Partner objects
 //     */

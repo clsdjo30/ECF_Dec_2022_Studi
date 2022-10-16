@@ -135,8 +135,9 @@ class AppFixtures extends Fixture
                     ->setFirstName($faker->firstName())
                     ->setLastName($faker->lastName())
                     ->setRoles(['ROLE_SUBSIDIARY'])
-                    ->setRoomManager($park);
+                   ;
 
+                $park->setUser($userSubsidiary);
 
                 $manager->persist($userSubsidiary);
                 $manager->persist($park);

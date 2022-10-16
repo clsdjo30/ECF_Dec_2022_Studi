@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+    {% if is_granted('ROLE_TECH') %}
     {{ include('components/dashboard/navigation/_mobil-navigation.html.twig') }}
     {{ include('components/dashboard/navigation/_sidebar-menu-desktop.html.twig') }}
 
@@ -41,6 +42,11 @@
 
         {{ include('components/dashboard/content-dashboard/_footer.html.twig') }}
     </div>
+    {% elseif is_granted('ROLE_PARTNER') %}
+        {{ include('components/dashboard/partner-view/partner-details.html.twig') }}
+    {% elseif is_granted('ROLE_SUBSIDIARY')%}
+        {{ include('components/dashboard/subsidiary-view/subsidiary-details.html.twig') }}
+    {% endif %}
 {% endblock %}
 
 

@@ -10,10 +10,11 @@ use App\Form\ModifyPartnerPermissionType;
 use App\Form\PartnerEditType;
 use App\Form\PartnerType;
 use App\Form\SubsidiaryNewType;
-use App\Form\SubsidiaryType;
 use App\Repository\PartnerRepository;
+use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,18 @@ use DateTime;
 #[Route('/partner')]
 class PartnerController extends AbstractController
 {
-    #[Route('/new', name: 'partner_new', methods: ['GET', 'POST'])]
+
+    #[Route('/', name: 'partner')]
+    public function index(PartnerRepository $partnerRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_TECH');
+
+        return $this->render('partner/index.html.twig', [
+            'partners' => $partnerRepository->findAll()
+        ]);
+    }
+
+    #[Route('/new', name: 'partner_new', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function new(
         Request $request,
         EntityManagerInterface $manager,
@@ -89,23 +101,26 @@ class PartnerController extends AbstractController
             $userRoomManager
                 ->setPassword($managerHashedPassword)
                 ->setRoles(["ROLE_SUBSIDIARY"]);
+            $manager->persist($userRoomManager);
+
+
 
             //on enregistre la date de creation
             $subsidiary->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime());
+                ->setUpdatedAt(new DateTime())
+                ->setUser($userRoomManager);
 
 
             $manager->persist($userPartner);
             $manager->persist($partnerPermission);
             $manager->persist($partner);
             $manager->persist($subsidiary);
-            $manager->persist($userRoomManager);
 
             $manager->flush();
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
-            return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partner/new.html.twig', [
@@ -114,15 +129,33 @@ class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'partner_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'partner_show', methods: ['GET']), isGranted('ROLE_PARTNER')]
     public function show(Partner $partner): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('partner/show.html.twig', [
             'partner' => $partner,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'partner_edit', methods: ['GET', 'POST'])]
+    #[Route('/subsidiary/{id}', name: 'subsidiary_show', methods: ['GET']), isGranted('ROLE_SUBSIDIARY')]
+    public function showSubsidiary( SubsidiaryRepository $subsidiaryRepository ): Response
+    {
+        $user = $this->getUser();
+
+        $sub = $subsidiaryRepository->findOneBy([
+           'user' => $user
+        ]);
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('partner/show.html.twig', [
+            'subsidiary' => $sub
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'partner_edit', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function editPartner(
         Request $request,
         Partner $partner,
@@ -157,7 +190,7 @@ class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit-permissions', name: 'partner_edit_permissions', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit-permissions', name: 'partner_edit_permissions', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function editPermissions(
         Request $request,
         Partner $partner,
@@ -186,7 +219,7 @@ class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/nouvelle-salle-de-sport', name: 'partner_new_subsidiary', methods: ['GET', 'POST'])]
+    #[Route('/{id}/nouvelle-salle-de-sport', name: 'partner_new_subsidiary', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function addNewSubsidiary(
         Partner $partner,
         Request $request,
@@ -239,7 +272,7 @@ class PartnerController extends AbstractController
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
-            return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partner/new-subsidiary.html.twig', [

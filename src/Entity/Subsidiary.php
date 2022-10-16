@@ -28,6 +28,7 @@ class Subsidiary
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $logoUrl;
 
     #[ORM\Column(length: 255)]
@@ -76,7 +77,7 @@ class Subsidiary
     #[ORM\Column]
     private ?bool $isActive = null;
 
-    #[ORM\OneToOne(mappedBy: 'roomManager', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'roomManager', cascade: ['persist', 'remove'])]
     #[Assert\Type(type: User::class)]
     #[Assert\Valid]
     private ?User $user = null;

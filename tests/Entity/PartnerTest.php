@@ -3,8 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Partner;
-use App\Entity\Permission;
-use App\Entity\User;
+use App\Entity\PartnerPermission;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -57,22 +56,9 @@ class   PartnerTest extends KernelTestCase
     /**
      * @throws Exception
      */
-    public function testToLongBlankPhoneNumberEntity(): void
+    public function testToLongPhoneNumberEntity(): void
     {
         $this->assertHasErrors($this->getEntity()->setPhoneNumber('00102030405'), 1);
-    }
-
-    public function testAddPermissionToPartner(): void
-    {
-        $perm =( new Permission())
-            ->setIsActive('permission')
-            ->setIsActive(true);
-        $partner = (new Partner())
-            ->addGlobalPermission($perm);
-
-       $this->assertNotNull($partner->getGlobalPermissions() ) ;
-
-
     }
 
     /**

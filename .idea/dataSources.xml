@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://127.0.0.1:3306/ecf_dec_2022_studi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="heroku Ecf 2022" uuid="767ef1ed-7971-4ad1-821e-1260a88eeedf">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_9e35f283aa6a18e</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

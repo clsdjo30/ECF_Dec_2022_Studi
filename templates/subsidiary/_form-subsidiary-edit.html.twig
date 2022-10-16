@@ -1,9 +1,9 @@
 <div class="flex-auto">
     <div class="flex flex-wrap">
         <div class="relative  w-full pr-4 max-w-full flex-grow flex-1 mb-3 p-4">
-            {% for subsidform in form.subsidiaries %}
+
             <div class="flex flex-col">
-                <h3 class="text-orange-500 text-xl font-bold text-center mb-3 capitalize py-5">Création de la Salle de
+                <h3 class="text-orange-500 text-xl font-bold text-center mb-3 capitalize py-5">Modification de la Salle de
                     sport</h3>
                 <!-- Subsidiary Name -->
                 <div class="fle flex-col justify-between items-center">
@@ -37,12 +37,12 @@
                     </div>
                     <div class="flex flex-col w-full">
                         <!-- Subsidiary logo -->
-                        {{ form_label(form.logo, 'Logo de la salle', {
+                        {{ form_label(subsidform.logo, 'Logo de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 ml-3 pb-2'
                             }
                         }) }}
-                        {{ form_widget(form.logo,{
+                        {{ form_widget(subsidform.logo,{
                             'attr': {
                                 'class': 'input-partner'
                             }
@@ -185,27 +185,12 @@
                                 }) }}
 
                             </div>
-                            <div class="flex flex-col w-8/12 mb-3">
-                                {{ form_label(subsidform.user.password, 'Mot de passe provisoire', {
-                                    'label_attr': {
-                                        'class': 'italic text-sm text-tail-400 ml-3'
-                                    }
-                                }) }}
-                                {{ form_widget(subsidform.user.password,{
-                                    'attr': {
-                                        'class': 'input-partner '
-                                    }
-                                } ) }}
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    {% endfor %}
 </div>
 
 

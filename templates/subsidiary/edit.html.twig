@@ -35,7 +35,17 @@
                     <div class=" lg:w-8/12  w-full px-4">
                         <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-4  shadow-lg">
                             <div class="flex-auto p-4 lg:p-10">
-                                {{ include('partner/_form-edit.html.twig') }}
+                                {{ form_start(subsidform) }}
+                                {{ form_row(subsidform._token) }}
+                                {{ include('subsidiary/_form-subsidiary-edit.html.twig') }}
+                                <div class="flex justify-center items-center mt-5">
+                                    <button type="submit"
+                                            class="w-6/12 px-8 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500  capitalize"
+                                    >
+                                        Enregistrer
+                                    </button>
+                                </div>
+                                {{ form_end(subsidform, {render_rest: false}) }}
                             </div>
                         </div>
                     </div>

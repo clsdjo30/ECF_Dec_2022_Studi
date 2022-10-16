@@ -41,28 +41,25 @@
                     {% endfor %}
 
                     {% if subsidiaryUrl < 2 %}
-                        <span>Cette franchise possède {{ subsidiaryUrl }} site web </span>
+                        <span>{{ subsidiaryUrl }} site web </span>
                     {% else %}
-                        <span>Cette franchise possède {{ subsidiaryUrl }} sites web</span>
+                        <span>{{ subsidiaryUrl }} sites web</span>
                     {% endif %}
 
                 </div>
 
                 <div class="font-extra-light text-base text-zinc-900 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
-
-                    <span>Cette franchise posséde {{ pluralize(partner.subsidiaries | length, 'salle', 'salles') }}</span>
-
+                    <span>
+                        {{ pluralize(partner.subsidiaries | length, 'salle', 'salles')  }}
+                    </span>
                 </div>
-
-
-
                 <!-Affichage actif/inactif--->
                 <div class="text-base h-12 flex justify-between items-center px-2 ">
                     <div>
                         {% if partner.isActive == true %}
                             <span data-choose-partner-target="active"
-                                  class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
+                                  class="px-5 py-1 rounded-full shadow-lg bg-teal-200 text-zinc-900 font-bold ">
                                     Actif
                                 </span>
                         {% else %}
@@ -76,11 +73,7 @@
                         <a
                                 href="{{ path('partner_show', {'id': partner.id}) }}"
                                 class="border-2 border-orange-500/50 rounded px-5 py-1 text-xs text-zinc-900 hover:border-teal-500 hover:text-sm">
-                            {% if partner.subsidiaries.count == 1 %}
-                                Voir la salle
-                            {% else %}
-                                Voir les salles
-                            {% endif %}
+                            Fiche Franchisé
                         </a>
 
                     </div>

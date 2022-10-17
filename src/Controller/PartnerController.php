@@ -15,10 +15,14 @@ use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
@@ -26,7 +30,6 @@ use DateTime;
 #[Route('/partner')]
 class PartnerController extends AbstractController
 {
-
     #[Route('/', name: 'partner')]
     public function index(PartnerRepository $partnerRepository): Response
     {
@@ -141,11 +144,15 @@ class PartnerController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/{id}/edit-permissions', name: 'partner_edit_permissions', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function editPermissions(
         Request $request,
         Partner $partner,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        MailerInterface $mailer
     ): Response
     {
         $form = $this->createForm(ModifyPartnerPermissionType::class, $partner);
@@ -153,8 +160,26 @@ class PartnerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $partner = ($form->getData());
+            $partnerEmail = $partner->getUser()->getEmail();
+            $partnerName = $partner->getUser();
+            $permissions = $partner->getGlobalPermissions();
+
+
+            $modificationPermissionEmail = (new TemplatedEmail())
+                ->from(new Address('contact@c-and-com.studio', 'Trt Consulting'))
+                ->to($partnerEmail)
+                ->subject('Vos permission ont été modifié !')
+                ->context([
+                    'partner' => $partnerEmail,
+                    'partnerName' => $partnerName,
+                    'permissions' => $permissions
+                ])
+                ->text('Pour plus de renseignements, merci de contacté notre équipe par mail.!')
+                ->htmlTemplate('email/permissions-modification.html.twig');
+
 
             $manager->persist($partner);
+            $mailer->send($modificationPermissionEmail);
 
             $manager->flush();
 

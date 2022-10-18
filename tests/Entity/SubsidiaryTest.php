@@ -52,13 +52,6 @@ class SubsidiaryTest extends KernelTestCase
         $this->assertHasErrors($this->getEntity()->setName('Ce Nom Est Carrement Trop Long Et De Loin mais pas encore assez je pense'), 1);
     }
 
-    /**
-     * @throws Exception
-     */
-    public function testInvalidBlankLogoUrlEntity(): void
-    {
-        $this->assertHasErrors($this->getEntity()->setLogoUrl(''), 1);
-    }
 
     /**
      * @throws Exception

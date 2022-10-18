@@ -15,6 +15,14 @@
                                 {{ message }}
                             </div>
                         {% endfor %}
+
+                            <div class="flex justify-start items-center w-full ">
+                                <i class="fa fa-arrow-circle-right mr-3 text-zinc-900 " style="color: #04D6C8;"></i>
+                                <a href="{{ path('logout') }}" class="text-zinc-900">
+                                    Se Déconnecter
+                                </a>
+                            </div>
+
                         {{ include('components/dashboard/partner-details/_top-partner-detail.html.twig') }}
                     {% endblock %}
                 </div>

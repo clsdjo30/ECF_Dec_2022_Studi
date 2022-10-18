@@ -9,6 +9,14 @@
                     </a>
                 </div>
             {% endif %}
+            {% if is_granted('ROLE_PARTNER') %}
+                <div class="flex justify-start items-center w-full ">
+                    <i class="fa fa-arrow-circle-right mr-3 text-zinc-900 " style="color: #04D6C8;"></i>
+                    <a href="{{ path('logout') }}" class="text-zinc-900">
+                        Se Déconnecter
+                    </a>
+                </div>
+            {% endif %}
             <h1 class="text-zinc-900 uppercase font-bold text-lg text-center">
                 Informations sur le franchisé
             </h1>

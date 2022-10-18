@@ -20,49 +20,32 @@
             <columns>
                 <spacer size="20"></spacer>
                 <h4 class="text-center">
-                    Nous venons de modifer vos permissions
+                    Bienvenue dans la famille des Lions Club !
                 </h4>
                 <spacer size="10"></spacer>
             </columns>
         </row>
         <row>
             <columns>
-
                 <p>
-                    Bonjour {{ partnerName.firstName }} {{ partnerName.lastName }}
+                    Avant d'avoir accés à votre espace vous devez modifier votre mot de passe
                 </p>
-                <spacer size="10"></spacer>
-
-                <p>
-                    Les options suivantes ont été activé
-                </p>
-                {% for permission in permissions %}
-                    {% if permission.isActive == true %}
-                        <ul class="list">
-                            <li>
-                                {{ permission.permission }}
-                            </li>
-                        </ul>
-                    {% endif %}
-                {% endfor %}
-
             </columns>
         </row>
-        <spacer size="30"></spacer>
         <row>
             <columns>
-                <p>
-                    Pour continuer à accroitre votre activité, les options suivantes sont disponibles :
+                <p>Votre identifiant de connexion : {{ connexionId }}</p>
+                <p class="text-center">
+                    <button>
+                        <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">
+                            Je change mon mot de passe
+                        </a>
+                    </button>
                 </p>
-                {% for permission in permissions %}
-                    {% if permission.isActive == false %}
-                        <ul class="list">
-                            <li>
-                                {{ permission.permission }}
-                            </li>
-                        </ul>
-                    {% endif %}
-                {% endfor %}
+
+                <p>Attention le lien expirera dans :  {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                    </p>
+
 
             </columns>
         </row>
@@ -74,3 +57,8 @@
 
     </container>
 {% endapply %}
+
+
+
+
+

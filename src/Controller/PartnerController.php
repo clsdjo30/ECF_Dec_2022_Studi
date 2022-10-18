@@ -15,17 +15,24 @@ use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
 #[Route('/partner')]
 class PartnerController extends AbstractController
 {
+    use ResetPasswordControllerTrait;
 
     #[Route('/', name: 'partner')]
     public function index(PartnerRepository $partnerRepository): Response
@@ -37,11 +44,18 @@ class PartnerController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ResetPasswordExceptionInterface
+     */
     #[Route('/new', name: 'partner_new', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function new(
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $passwordHasher,
+        ResetPasswordController $resetPasswordController,
+        MailerInterface $mailer
+
     ): Response {
         //On crée le formulaire pour le franchisé
         $partner = new Partner();
@@ -79,6 +93,26 @@ class PartnerController extends AbstractController
             $manager->persist($partnerPermission);
             $manager->persist($partner);
             $manager->flush();
+
+
+                $resetToken = $resetPasswordController->resetPasswordHelper->generateResetToken($partner->getUser());
+                $connexionEmail = $partner->getUser()->getEmail();
+                $email = (new TemplatedEmail())
+                    ->from(new Address('contact@c-and-com.studio', 'Lions Fitness Club'))
+                    ->to($userPartner->getEmail())
+                    ->subject('Your password reset request')
+                    ->htmlTemplate('reset_password/email.html.twig')
+                    ->context([
+                        'resetToken' => $resetToken,
+                        'connexionId' => $connexionEmail
+                    ])
+                ;
+
+                $mailer->send($email);
+            $this->setTokenObjectInSession($resetToken);
+
+
+
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
@@ -141,11 +175,15 @@ class PartnerController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/{id}/edit-permissions', name: 'partner_edit_permissions', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function editPermissions(
         Request $request,
         Partner $partner,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        MailerInterface $mailer
     ): Response
     {
         $form = $this->createForm(ModifyPartnerPermissionType::class, $partner);
@@ -153,8 +191,26 @@ class PartnerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $partner = ($form->getData());
+            $partnerEmail = $partner->getUser()->getEmail();
+            $partnerName = $partner->getUser();
+            $permissions = $partner->getGlobalPermissions();
+
+
+            $modificationPermissionEmail = (new TemplatedEmail())
+                ->from(new Address('contact@c-and-com.studio', 'Lions Fitness Club'))
+                ->to($partnerEmail)
+                ->subject('Vos permission ont été modifié !')
+                ->context([
+                    'partner' => $partnerEmail,
+                    'partnerName' => $partnerName,
+                    'permissions' => $permissions
+                ])
+                ->text('Pour plus de renseignements, merci de contacté notre équipe par mail.!')
+                ->htmlTemplate('email/permissions-modification.html.twig');
+
 
             $manager->persist($partner);
+            $mailer->send($modificationPermissionEmail);
 
             $manager->flush();
 
@@ -170,13 +226,19 @@ class PartnerController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws ResetPasswordExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     #[Route('/{id}/nouvelle-salle-de-sport', name: 'partner_new_subsidiary', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function addNewSubsidiary(
         Partner $partner,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $passwordHasher,
-        FileUploader $fileUploader
+        FileUploader $fileUploader,
+        ResetPasswordController $resetPasswordController,
+        MailerInterface $mailer
     ): Response {
 
         $subsidiary = new Subsidiary();
@@ -202,6 +264,7 @@ class PartnerController extends AbstractController
                 $newFileName = $fileUploader->upload($logo);
                 $subsidiary->setLogoUrl($newFileName);
             }
+
             //on crypte le mot de passe du manager
             $managerPlainTextPassword = $userRoomManager->getPassword();
             $managerHashedPassword = $passwordHasher->hashPassword(
@@ -214,14 +277,30 @@ class PartnerController extends AbstractController
                 ->setPassword($managerHashedPassword)
                 ->setRoles(["ROLE_SUBSIDIARY"]);
 
-
-            $manager->persist($subsidiary);
             $manager->persist($userRoomManager);
             $manager->persist($partner);
+            $manager->persist($subsidiary);
+
 
             $manager->flush();
 
-            $this->addFlash('success', 'Franchisé enregistré ! ');
+            $resetToken = $resetPasswordController->resetPasswordHelper->generateResetToken($subsidiary->getUser());
+            $connexionEmail = $subsidiary->getUser()->getEmail();
+            $email = (new TemplatedEmail())
+                ->from(new Address('contact@c-and-com.studio', 'Lions Fitness Club'))
+                ->to($userRoomManager->getEmail())
+                ->subject('Your password reset request')
+                ->htmlTemplate('reset_password/email.html.twig')
+                ->context([
+                    'resetToken' => $resetToken,
+                    'connexionId' => $connexionEmail
+                ])
+            ;
+
+            $mailer->send($email);
+            $this->setTokenObjectInSession($resetToken);
+
+            $this->addFlash('success', 'Une nouvelle salle de sport a bien été ajouté au franchisé! ');
 
             return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }

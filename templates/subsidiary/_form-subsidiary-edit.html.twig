@@ -20,6 +20,7 @@
                                     'class': 'input-partner'
                                 },
                             }) }}
+                            {{ form_errors(subsidform.name) }}
                         </div>
                         <!-- Subsidiary PhoneNumber -->
                         <div class="flex flex-col w-5/12">
@@ -74,6 +75,7 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(subsidform.address) }}
                     </div>
                     <div class="flex justify-between items-center mt-3">
                         <!-- Subsidiary city -->
@@ -114,6 +116,7 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(subsidform.description) }}
                     </div>
 
                     <div class="flex items-center w-full mt-3 mb-6 ">

@@ -1,0 +1,76 @@
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+    <container>
+        <row class="header logo-header">
+            <columns>
+                <a href="{{ url('login') }}">
+                    <img src="{{ email.image('@images/email_logo.png') }}"
+                         class=""
+                         alt="Lions Fitness Club"
+                         style="width:60px; height:60px;">
+                </a>
+            </columns>
+            <columns>
+                <h1>
+                    Lions Fitness Club
+                </h1>
+            </columns>
+        </row>
+
+        <row>
+            <columns>
+                <spacer size="20"></spacer>
+                <h4 class="text-center">
+                    Nous venons de modifer vos permissions
+                </h4>
+                <spacer size="10"></spacer>
+            </columns>
+        </row>
+        <row>
+            <columns>
+
+                <p>
+                    Bonjour {{ partnerName.firstName }} {{ partnerName.lastName }}
+                </p>
+                <spacer size="10"></spacer>
+
+                <p>
+                    Les options suivantes ont été activé
+                </p>
+                {% for permission in permissions %}
+                    {% if permission.isActive == true %}
+                        <ul class="list">
+                            <li>
+                                {{ permission.permission }}
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+
+            </columns>
+        </row>
+        <spacer size="30"></spacer>
+        <row>
+            <columns>
+                <p>
+                    Pour continuer à accroitre votre activité, les options suivantes sont disponibles :
+                </p>
+                {% for permission in permissions %}
+                    {% if permission.isActive == false %}
+                        <ul class="list">
+                            <li>
+                                {{ permission.permission }}
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+
+            </columns>
+        </row>
+        <row class="footer">
+            <columns>
+                <p>Notre équipe d'experts spécialisés en <em>développement de la marque </em> est à votre écoute</p>
+            </columns>
+        </row>
+
+    </container>
+{% endapply %}

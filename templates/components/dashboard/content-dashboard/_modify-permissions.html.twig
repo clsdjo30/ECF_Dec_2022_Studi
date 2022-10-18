@@ -2,19 +2,19 @@
 
 <!--MACRO POUR AJOUT PERMISSION-->
 {% macro printPermissionRow(permissionForm) %}
-    <li class="permission-info w-full  form-check form-switch flex justify-start items-center mb-3 mt-5">
+    <li class="permission-info w-full  form-check form-switch flex flex-col justify-start items-center mb-3 mt-5">
 
         {{ form_widget(permissionForm.permission, {
             'attr': {
-                'class': 'rounded  border-solid accent-pink-500 w-5/12 pr-10'
+                'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-2 lg:pr-10'
 
             }
         }) }}
-        <span class="flex form-check form-switch w-4/12">
+        <span class="flex justify-between items-center form-check form-switch w-full lg:w-4/12">
 
             {{ form_label(permissionForm.isActive, "Activer l'option ?", {
                 'label_attr': {
-                    'class': 'italic text-base  text-orange-400 mr-20'
+                    'class': 'italic text-base  text-orange-400 mr-20 -ml-10'
                 }
             }) }}
             {{ form_widget(permissionForm.isActive,{
@@ -28,7 +28,7 @@
             } ) }}
         </span>
     </li>
-    <hr>
+
 {% endmacro %}
 
 <div class="flex justify-center items-center  bg-teal-400 rounded-lg shadow-2xl py-20 px-10">
@@ -37,7 +37,7 @@
         <h1 class="text-center text-zinc-900 uppercase font-bold text-lg pb-12">
             Gestion des Permissions
         </h1>
-        <div class="w-full px-28">
+        <div class="w-full lg:px-28">
 
             {{ form_start(form) }}
             <div class="flex justify-start items-center">
@@ -56,7 +56,7 @@
             <div class="w-full flex justify-end items-center mb-5 mt-8">
 
                 <button type="button"
-                        class="js-btn-new flex items-center justify-center w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
+                        class="js-btn-new flex items-center justify-center w-5/12  lg:w-3/12 lg:px-6 py-2 border-2 border-orange-500/50 rounded text-sm lg:text-base text-zinc-900 hover:border-teal-500"
                         data-collection-holder-class="globalPermissions">
                     <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
                     Ajouter des options
@@ -66,7 +66,7 @@
                 <!--Start of Permission Modal-->
                 <!-- Button trigger modal -->
                     <button type="button"
-                            class="flex items-center justify-center w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
+                            class="flex items-center justify-center w-4/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
                             data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
                     <i class="fas fa-pen-to-square  text-teal-400 hover:text-orange-500 pr-2"></i>

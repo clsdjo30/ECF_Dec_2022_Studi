@@ -52,7 +52,7 @@ class SubsidiaryNewType extends AbstractType
                     'role' => 'switch'
                 ]
             ])
-            ->add('user', UserEditType::class, [
+            ->add('user', UserType::class, [
                 'data_class' => User::class
             ])
 

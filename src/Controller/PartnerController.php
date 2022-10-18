@@ -264,6 +264,7 @@ class PartnerController extends AbstractController
                 $newFileName = $fileUploader->upload($logo);
                 $subsidiary->setLogoUrl($newFileName);
             }
+
             //on crypte le mot de passe du manager
             $managerPlainTextPassword = $userRoomManager->getPassword();
             $managerHashedPassword = $passwordHasher->hashPassword(
@@ -276,10 +277,10 @@ class PartnerController extends AbstractController
                 ->setPassword($managerHashedPassword)
                 ->setRoles(["ROLE_SUBSIDIARY"]);
 
-
-            $manager->persist($partner);
             $manager->persist($userRoomManager);
+            $manager->persist($partner);
             $manager->persist($subsidiary);
+
 
             $manager->flush();
 
@@ -299,7 +300,7 @@ class PartnerController extends AbstractController
             $mailer->send($email);
             $this->setTokenObjectInSession($resetToken);
 
-            $this->addFlash('success', 'Franchisé enregistré ! ');
+            $this->addFlash('success', 'Une nouvelle salle de sport a bien été ajouté au franchisé! ');
 
             return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
         }

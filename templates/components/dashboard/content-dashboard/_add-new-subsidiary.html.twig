@@ -9,7 +9,7 @@
 
             {{ form_start(subsidform) }}
             <div class="flex justify-start items-center">
-                {{ form_errors(subsidform) }}
+                {{ form_row(subsidform._token) }}
                 {{ include('partner/_form-new-subsidiary.html.twig') }}
             </div>
             <div class="w-full flex justify-end items-center mb-5 mt-8">

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Partner;
 use App\Entity\PartnerPermission;
 use App\Entity\Subsidiary;
@@ -9,6 +10,7 @@ use App\Entity\User;
 use App\Form\ModifyPartnerPermissionType;
 use App\Form\PartnerEditType;
 use App\Form\PartnerType;
+use App\Form\SearchFormType;
 use App\Form\SubsidiaryNewType;
 use App\Repository\PartnerRepository;
 use App\Repository\SubsidiaryRepository;
@@ -35,12 +37,23 @@ class PartnerController extends AbstractController
     use ResetPasswordControllerTrait;
 
     #[Route('/', name: 'partner')]
-    public function index(PartnerRepository $partnerRepository): Response
+    public function index(
+        PartnerRepository $partnerRepository,
+        Request $request
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_TECH');
 
+        $search = new SearchData();
+
+        $form = $this->createForm(SearchFormType::class, $search);
+        $form->handleRequest($request);
+
+        $partners = $partnerRepository->findPartnerBySearch($search);
+
         return $this->render('partner/index.html.twig', [
-            'partners' => $partnerRepository->findAll()
+            'partners' => $partners,
+            'form' => $form->createView(),
         ]);
     }
 

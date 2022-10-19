@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\Partner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -54,28 +55,38 @@ class PartnerRepository extends ServiceEntityRepository
             ;
     }
 
-//    /**
-//     * @return Partner[] Returns an array of Partner objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param SearchData $search
+     * @return array
+     */
+    public function findPartnerBySearch(SearchData $search ): array
+    {
 
-//    public function findOneBySomeField($value): ?Partner
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query = $this
+            ->createQueryBuilder('p')
+        ;
+
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('p.name LIKE :q ')
+                ->setParameter('q', "%{$search->q}%")
+                ;
+        }
+        
+        if (!empty($search->active)) {
+            $query = $query
+                ->where('p.isActive IN (:isActive)')
+                ->setParameter('isActive', $search->active)
+                ;
+        }
+
+        if (!empty($search->close)) {
+            $query = $query
+                ->where('p.isActive = 0')
+                ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
 }

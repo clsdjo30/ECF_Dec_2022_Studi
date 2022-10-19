@@ -48,11 +48,12 @@ class PartnerController extends AbstractController
 
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
+
         $partners = $partnerRepository->findPartnerBySearch($search);
 
         return $this->render('partner/index.html.twig', [
             'partners' => $partners,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 

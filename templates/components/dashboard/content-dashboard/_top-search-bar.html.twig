@@ -4,46 +4,68 @@
     >
         <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
 
-{{ form_start(form ) }}
-            <div class="relative w-full max-w-full flex-grow flex-1">
+            <div class="relative w-full max-w-full flex-1">
+                {{ form_start(form ) }}
                 <!--SEARCH BAR-->
-                <div class="relative flex w-full lg:w-8/12 h-12 rounded-lg shadow-lg bg-white overflow-hidden w-10/12">
-                    <div class="grid place-items-center h-full w-12 text-gray-300">
-                        <button type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
+                <div class=" flex items-center lg:w-6/12 h-12 rounded-lg shadow-lg bg-white w-8/12">
+                        <div class="ml-5 w-10/12">
+                            {{ form_widget(form.q, {
+                                'attr': {
+                                    'class': 'relative flex w-full lg:w-8/12 h-12  bg-transparent overflow-hidden text-gray-300 focus:border-none focus:outline-none',
+                                    'placeholder': 'Saisissez votre recherche'
+                                }
+                            }) }}
+                        </div>
+                        <button class="grid grid-cols-2 place-items-center h-full w-26 text-gray-300 mr-5" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+
+                                Filtrer
+
+
                         </button>
-                    </div>
-                    {{ form_label(form.q) }}
-                    {{ form_widget(form.q, {
-                        'attr': {
-                        'class': "h-full w-full outline-none text-sm text-gray-700 pr-2"
-                    }
-                    }) }}
 
                 </div>
                 <!--TOGGLE ACTIVE CHOICE-->
-                <div class="flex justify-between align-center mt-4 w-full">
-                    <div>
-                        <button
-                                class="px-8 py-2 rounded-md shadow-lg bg-teal-400 peer-checked:dark:bg-white mr-10"
-                                data-action="choose-partner#selectActivePartner"
-                        >
-                            Actif
-                        </button>
+                <div class="flex justify-evenly lg:justify-between items-center mt-4 w-full lg:w-10/12">
+                    <div class="flex w-7/12 lg:w-5/12">
+                     <span class="flex justify-start items-center form-check form-switch w-4/12 lg:w-4/12 mr-10">
+                        {{ form_label(form.active, "Actif", {
+                            'label_attr': {
+                                'class': 'italic text-base  text-teal-400 mr-5 -ml-10'
+                            }
+                        }) }}
+                        {{ form_widget(form.active,{
+                             'attr': {
+                                 'class': 'form-check-input appearance-none w-9  rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
 
-                        <button
-                                class="px-8 py-2 rounded-md shadow-lg bg-orange-400 peer-checked:dark:bg-teal-400"
-                                data-action="choose-partner#selectInactivePartner"
-                        >
-                            Inactif
-                        </button>
+                             },
+                             'type' :"checkbox",
+                             'role' :"switch",
+                             'id' :"flexSwitchCheckChecked",
+                         }) }}
+                        </span>
+                        <span class="flex justify-start items-center form-check form-switch w-4/12 lg:w-4/12 -ml-10">
+
+                        {{ form_label(form.close, "Inactif", {
+                            'label_attr': {
+                                'class': 'italic text-base  text-teal-400 mr-5 -ml-10'
+                            }
+                        }) }}
+                            {{ form_widget(form.close,{
+                                'attr': {
+                                    'class': 'form-check-input appearance-none w-9  rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
+
+                                },
+                                'type' :"checkbox",
+                                'role' :"switch",
+                                'id' :"flexSwitchCheckChecked",
+                            }) }}
+                        </span>
                     </div>
+                    {{ form_end (form) }}
 
-            {{ form_end(form) }}
                     <button>
                         <a
                                 href="{{ path('partner_new') }}"

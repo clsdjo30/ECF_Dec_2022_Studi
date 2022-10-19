@@ -8,9 +8,9 @@ use App\Entity\Subsidiary;
 class SearchData
 {
     /**
-     * @var string
+     * @var null | string
      */
-    public string $q = '';
+    public ?string $q = null;
 
     /**
      * @var Subsidiary[]
@@ -26,4 +26,5 @@ class SearchData
      * @var bool|null
      */
     public ?bool $close = false;
+
 }

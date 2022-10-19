@@ -19,7 +19,16 @@ class SearchFormType extends AbstractType
                'required' => false,
                'attr' => [
                    'placeholder' => "Saisissez votre recherche"
-               ]
+               ],
+
+           ])
+           ->add('active', CheckboxType::class, [
+               'label' => 'Franchisé actif',
+               'required' => false,
+           ])
+           ->add('close', CheckboxType::class, [
+               'label' => 'Franchisé inactif',
+               'required' => false,
            ])
            ;
     }

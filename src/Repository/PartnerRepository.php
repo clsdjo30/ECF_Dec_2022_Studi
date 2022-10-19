@@ -64,7 +64,6 @@ class PartnerRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-
         ;
 
         if (!empty($search->q)) {
@@ -74,20 +73,20 @@ class PartnerRepository extends ServiceEntityRepository
                 ;
         }
         
+        if (!empty($search->active)) {
+            $query = $query
+                ->where('p.isActive IN (:isActive)')
+                ->setParameter('isActive', $search->active)
+                ;
+        }
+
+        if (!empty($search->close)) {
+            $query = $query
+                ->where('p.isActive = 0')
+                ;
+        }
 
         return $query->getQuery()->getResult();
-
     }
 
-    /**
-     * @return Partner[] Returns an array of Subsidiary objects
-     */
-    public function findByUserActive(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.isActive = 1')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
 }

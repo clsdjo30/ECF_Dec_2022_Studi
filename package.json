@@ -4,7 +4,7 @@
         "@babel/preset-env": "^7.19.4",
         "@hotwired/stimulus": "^3.1.0",
         "@symfony/stimulus-bridge": "^3.2.1",
-        "@symfony/webpack-encore": "^4.0.0",
+        "@symfony/webpack-encore": "^4.1.1",
         "autoprefixer": "^10.4.12",
         "core-js": "^3.25.5",
         "inky": "^1.4.2",
@@ -13,7 +13,7 @@
         "regenerator-runtime": "^0.13.10",
         "sass": "^1.55.0",
         "sass-loader": "^13.1.0",
-        "tailwindcss": "^3.1.8",
+        "tailwindcss": "^3.2.0",
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0",
         "webpack-notifier": "^1.15.0"
@@ -24,7 +24,8 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "heroku-postbuild" : "node_modules/.bin/encore production"
     },
     "engines": {
         "node": "v16.16.0",

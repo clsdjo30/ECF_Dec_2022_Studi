@@ -1,0 +1,138 @@
+<nav class="
+relative
+w-full
+flex flex-wrap
+items-center
+justify-between
+">
+    <!--Mobile top Menu-->
+
+    <div class="
+relative
+w-full
+flex flex-wrap
+items-center
+justify-between
+py-4
+bg-zinc-900
+text-white
+shadow-lg
+md:hidden
+">
+        <!--Mobile Menu-->
+        <div class="container-fluid w-full flex flex-wrap items-center justify-between px-6 ">
+           <div class="w-full h-full">
+               <button class="
+                        text-white
+                        border-0
+                        hover:shadow-none hover:no-underline
+                        py-2
+                        px-2.5
+                        bg-transparent
+                        focus:outline-none focus:ring-0 focus:shadow-none focus:no-underline "
+                         onclick="myMenu()"
+
+               >
+                   <svg aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="bars"
+                        class="w-6"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        >
+                       <path fill="currentColor"
+                             d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z">
+                       </path>
+                   </svg>
+               </button>
+           </div>
+            <!--Start-->
+            <div class="flex  flex-grow items-center hidden animate-menu"
+            id="js-collapse-mobile">
+                <div class="w-full h-full  bg-zinc-900 font-menu-item text-white">
+                    <ul class="px-1">
+                        <li class="relative">
+                            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-zinc-900 hover:bg-teal-50 transition duration-300 ease-in-out cursor-pointer">
+                                <i class="fas fa-industry text-orange-400 mr-2 text-sm"></i>
+                                <span class="capitalize text-base">
+                                    Partenaires
+                                </span>
+                            </a>
+                            <ul class="relative">
+                                <li class="relative">
+                                    <a href="{{ path('partner') }}"
+                                       class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-teal-600 hover:bg-teal-50 transition duration-300 ease-in-out capitalize">
+                                        voir tous
+                                    </a>
+                                </li>
+                                <li class="relative">
+                                    <a href="{{ path('partner_new') }}"
+                                       class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-teal-600 hover:bg-teal-50 transition duration-300 ease-in-out capitalize">
+                                        ajouter
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="relative">
+                            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-zinc-900 hover:bg-teal-50 transition duration-300 ease-in-out cursor-pointer">
+                                <i class="fas fa-store text-orange-400 mr-2 text-sm"></i>
+                                <span>
+                                    Structures
+                                </span>
+                            </a>
+                            <ul class="relative accordion-collapse collapse">
+                                <li class="relative">
+                                    <a href="#!"
+                                       class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-teal-600 hover:bg-teal-50 transition duration-300 ease-in-out capitalize">
+                                        voir toutes
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <hr class="my-2">
+                    <div class="pt-4 pb-2 px-6">
+                        <a href="#!">
+                            <div class="flex items-center">
+                                <div class="shrink-0">
+                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-full w-8"
+                                         alt="Avatar">
+                                </div>
+                                <div class="grow ml-3">
+                                    <p class="text-xs font-semibold text-teal-500">
+                                        {{ app.user.email }}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <ul class="relative px-1">
+                        <li class="relative">
+                            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-blue-600 hover:bg-blue-50 transition duration-300 ease-in-out capitalize"
+                               href="{{ path('logout') }}">
+                                <i class="fas fa-user-circle text-orange-400 mr-2 text-sm"></i>
+                                <span>
+                    déconnexion
+                </span>
+                            </a>
+                        </li>
+                        <li class="relative">
+                            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text text-white text-ellipsis whitespace-nowrap rounded hover:text-blue-600 hover:bg-blue-50 transition duration-300 ease-in-out"
+                               href="{{ path('new_technicien') }}"
+                            >
+                                <i class="fas fa-user-circle text-orange-400 mr-2 text-sm"></i>
+                                <span>
+                    Ajouter un technicien
+                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--END-->
+        </div>
+    </div>
+</nav>
+

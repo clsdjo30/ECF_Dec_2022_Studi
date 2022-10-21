@@ -10,7 +10,21 @@ module.exports = {
       'menu-item': ['Raleway'],
       'title': ['Rokkitt'],
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        menu: {
+          '0%': {
+            transform: 'translateY(-25%)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        }
+      },
+      animation: {
+        menu: 'menu 0.2s ease-in-out'
+      }
+    },
   },
   plugins: [
     require('tw-elements/dist/plugin')

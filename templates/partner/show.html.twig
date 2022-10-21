@@ -6,8 +6,8 @@
 
 {% block main %}
     {% if is_granted('ROLE_TECH') %}
-    {{ include('components/dashboard/navigation/_mobil-navigation.html.twig') }}
-    {{ include('components/dashboard/navigation/_sidebar-menu-desktop.html.twig') }}
+    {{ include('/navigation/_mobil-navigation.html.twig') }}
+    {{ include('/navigation/_sidebar-menu-desktop.html.twig') }}
 
     <div class="relative md:ml-60 bg-blueGray-50">
         <!-- Header -->

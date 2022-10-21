@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Lions Fitness Club{% endblock %}</title>
     <!--Rokkit Font-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
     <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@100;200;400;800;900&display=swap"
@@ -25,16 +26,19 @@
     {% endblock %}
 </head>
 <body class="font-menu-item antialiased">
-    {{ include('components/_notyf.html.twig') }}
-<div class="h-screen w-screen">
 
 
     {% block main %}
 
     {% endblock %}
 
-</div>
 </body>
-
+<script>
+    function myMenu() {
+        document.getElementById("js-collapse-mobile").classList.toggle("hidden");
+        document.getElementById("js-collapse-mobile").classList.toggle("block");
+    }
+</script>
 </html>
+
 

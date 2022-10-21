@@ -16,6 +16,7 @@ use App\Repository\PartnerRepository;
 use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,17 +40,27 @@ class PartnerController extends AbstractController
     #[Route('/', name: 'partner')]
     public function index(
         PartnerRepository $partnerRepository,
+        PaginatorInterface $paginator,
         Request $request
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_TECH');
 
+        //en envoi la pagination
+        $data = $partnerRepository->findAll();
+
+        $partners = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1 ),
+            6
+        );
+
+        // logic Search Bar
         $search = new SearchData();
 
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($request);
 
-        $partners = $partnerRepository->findPartnerBySearch($search);
 
         return $this->render('partner/index.html.twig', [
             'partners' => $partners,

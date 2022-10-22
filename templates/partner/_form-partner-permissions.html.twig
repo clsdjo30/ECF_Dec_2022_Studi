@@ -4,15 +4,16 @@
 {% macro printPermissionRow(permissionForm) %}
 
 
-    <li class="permission-info w-full  form-check form-switch flex justify-start items-center mb-3 mt-5">
+    <li class="js-btn-remove w-full flex flex-col lg:flex-row lg:justify-between items-center mb-3 mt-5">
 
         {{ form_widget(permissionForm.permission, {
             'attr': {
-                'class': 'rounded  border-solid accent-pink-500 w-5/12 pr-10'
+                'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-10'
 
             }
         }) }}
-        <span class="flex  form-check form-switch">
+        <span class="flex  form-check form-switch mt-2 lg:mt-0 w-full -ml-16 lg:ml-20"
+                id="btn-delete">
 
             {{ form_label(permissionForm.isActive, "Activer l'option ?", {
                 'label_attr': {
@@ -30,7 +31,8 @@
             } ) }}
         </span>
     </li>
-    <hr>
+            <hr>
+
 
 {% endmacro %}
 
@@ -41,7 +43,7 @@
     <div class="w-full mb-3 ">
         <div class="w-full flex justify-end items-center">
             <button type="button"
-                    class="js-btn-new flex items-center justify-center w-6/12 lg:w-4/12 px-4 py-1 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
+                    class="js-btn-new flex items-center justify-center w-8/12 lg:w-4/12 px-4 py-1 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
                     data-collection-holder-class="globalPermissions">
                 <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
                 Ajouter des options
@@ -49,7 +51,7 @@
         </div>
         <div class="flex justify-start items-center">
             <ul
-                    class="globalPermissions flex flex-col justify-start w-full"
+                    class="globalPermissions flex flex-col lg:justify-start w-full"
                     data-prototype="{{ formMacros.printPermissionRow(form.globalPermissions.vars.prototype)|e('html_attr') }}"
                     data_index="{{ form.globalPermissions|length > 0 ? form.globalPermissions|last.vars.name + 1 : 0 }}"
             >

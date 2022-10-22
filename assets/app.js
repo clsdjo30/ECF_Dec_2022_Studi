@@ -1,7 +1,8 @@
 import './styles/app.scss';
 
-// start the Stimulus application
-import './bootstrap';
+import  Filter from './modules/Filter';
+new Filter(document.querySelector('.js-filter'))
+
 
 import 'tw-elements';
 
@@ -11,6 +12,8 @@ import 'tw-elements';
 // Installation Fontawesome
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
+
+
 
 
 

@@ -8,6 +8,11 @@ use App\Entity\Subsidiary;
 class SearchData
 {
     /**
+     * @var int
+     */
+    public int $page = 1;
+
+    /**
      * @var null | string
      */
     public ?string $q = null;

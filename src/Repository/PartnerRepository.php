@@ -6,6 +6,9 @@ use App\Data\SearchData;
 use App\Entity\Partner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 /**
  * @extends ServiceEntityRepository<Partner>
@@ -17,9 +20,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PartnerRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
+
         parent::__construct($registry, Partner::class);
+        $this->paginator = $paginator;
     }
 
     public function save(Partner $entity, bool $flush = false): void
@@ -56,10 +61,11 @@ class PartnerRepository extends ServiceEntityRepository
     }
 
     /**
+     * Récupère les produits en lien avec une recherche
      * @param SearchData $search
-     * @return array
+     * @return PaginationInterface
      */
-    public function findPartnerBySearch(SearchData $search ): array
+    public function findPartnerBySearch(SearchData $search ): PaginationInterface
     {
 
         $query = $this
@@ -75,18 +81,17 @@ class PartnerRepository extends ServiceEntityRepository
         
         if (!empty($search->active)) {
             $query = $query
-                ->where('p.isActive IN (:isActive)')
-                ->setParameter('isActive', $search->active)
+                ->andWhere('p.isActive = 1')
                 ;
         }
 
-        if (!empty($search->close)) {
-            $query = $query
-                ->where('p.isActive = 0')
-                ;
-        }
 
-        return $query->getQuery()->getResult();
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            6
+        );
     }
 
 }

@@ -1,8 +1,8 @@
-<div class="w-full flex justify-center items-center break-words lg:mt-0 mb-6 shadow-lg rounded bg-white lg:bg-teal-100 mx-auto px-4 lg:px-10"
+<div class="w-full flex justify-center items-center break-words mt-3 md:mt-0 mb-6 shadow-lg rounded bg-white lg:bg-teal-100 mx-auto px-4 lg:px-10"
 >
     <div class="relative md:pr-4 max-w-10/12 flex-grow flex-1 lg:m-10 lg:p-5 bg-white rounded lg:shadow-lg  mt-3">
-        <h2 class="text-center font-semibold">Options incluses dans le contrat de franchise</h2>
-        <div class="flex flex-col justify-center items-center mt-8">
+        <h2 class="text-sm md:text-base text-center font-semibold">Options incluses dans le contrat de franchise</h2>
+        <div class="flex flex-col justify-center items-center mt-3 md:mt-8">
             {{ include('components/dashboard/partner-details/_partner-details-global-permissions.html.twig') }}
         </div>
         <div class="flex justify-end mb-3">
@@ -10,7 +10,7 @@
                 {% if is_granted('ROLE_TECH') %}
                 <a
                         href="{{ path('partner_edit_permissions', {'id': partner.id}) }}"
-                        class="border-2 border-orange-200 rounded px-5 py-1 text-base text-zinc-900 hover:border-teal-200">
+                        class="border-2 border-orange-200 rounded px-5 py-1 text-xs md:text-base text-zinc-900 hover:border-teal-200">
                     Modifier les options
                 </a>
                 {% else %}

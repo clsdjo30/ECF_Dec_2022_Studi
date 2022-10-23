@@ -7,13 +7,11 @@
                         <h3 class="text-zinc-900 uppercase font-bold text-xl">
                             {{ subsidiary.name }}
                         </h3>
-                        <div class="font-extra-light  lowercase text-base text-zinc-900">
-                        <span class="font-extra-light  lowercase text-sm lg:text-lg">
-                                <i class="fa fa-location-arrow mr-3" style="color: #ED8428;"></i>
-                                <span class="text-teal-600">{{ subsidiary.address }} - {{ subsidiary.postalCode }} - {{ subsidiary.city }}</span> <br/>
-                            </span>
+                        <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900">
                             <i class="fa fa-calendar mr-3 text-zinc-900"></i>
-                            <span class="text-xs lg:text-base" >Date de création: {{ subsidiary.createdAt | date('d-m-Y') }}</span>
+                            <span class="text-xs lg:text-base">
+                                Date de création: {{ subsidiary.createdAt | date('d-m-Y') }}
+                            </span>
                         </div>
                     </div>
                     <div class="relative w-auto pl-4 flex-initial">
@@ -21,20 +19,29 @@
                                 src="/uploads/logos/{{ subsidiary.logoUrl }}"
                                 class="text-white text-center inline-flex items-center justify-center w-16 lg:w-36 h-16 lg:h-36 shadow-xl rounded-full"
                                 alt="Logo de Lions Fitness Club">
-                        <div class="flex justify-center align-center mt-4 w-full">
-                            {% if partner.isActive == true %}
-                                <span data-choose-partner-target="active"
-                                      class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-zinc-900 font-bold ">
+                    </div>
+                </div>
+                <div class=" w-full -mt-4 mb-3">
+                    {% if partner.isActive == true %}
+                        <span data-choose-partner-target="active"
+                              class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-sm md:text-base text-zinc-900 font-bold ">
                                     Actif
                                 </span>
-                            {% else %}
-                                <span
-                                        class="px-5 py-1 rounded-full shadow-lg bg-orange-300 text-white font-bold ">
+                    {% else %}
+                        <span
+                                class="px-5 py-1 rounded-full shadow-lg bg-orange-300 text-sm md:text-base text-white font-bold ">
                                     Inactif
                                 </span>
-                            {% endif %}
-                        </div>
-                    </div>
+                    {% endif %}
+                </div>
+                <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900 w-full mb-3">
+                    <i class="fa fa-location-arrow mr-3" style="color: #ED8428;"></i>
+                    <span class="text-teal-600">
+                                {{ subsidiary.address }} <br>
+                                <span class="ml-7">
+                                    {{ subsidiary.postalCode }} - {{ subsidiary.city }}
+                                </span>
+                    </span>
                 </div>
                 <div class=" font-extra-light  lowercase text-lg text-zinc-900 lg:-mt-24">
                         <span class="font-extra-light  lowercase text-sm lg:text-xl ">
@@ -43,19 +50,19 @@
                             </span>
 
                 </div>
-                <div class="font-extra-light  lowercase text-base  lg:text-lg text-zinc-900">
+                <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900">
                     <i class="fa fa-envelope-open-text mr-3 text-zinc-900"></i>
                     <span>{{ subsidiary.user.email }}</span>
                 </div>
-                <div class="font-extra-light  lowercase text-base lg:text-lg text-zinc-900 lg:mb-3">
+                <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900">
                     <i class="fa fa-phone-square mr-3"></i>
                     <span>{{ subsidiary.phoneNumber }}</span>
                 </div>
-                <div class="font-extra-light  lowercase text-base lg:text-lg text-zinc-900">
+                <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900">
                     <i class="fa fa-globe mr-3 text-zinc-900"></i>
                     <span>{{ subsidiary.url }}</span>
                 </div>
-                <div class="font-extra-light text-base lg:text-lg text-zinc-900 mt-5 mb-3">
+                <div class="font-extra-light text-xs md:text-base text-zinc-900 mt-5 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
 
                     <span>{{ subsidiary.description | u.truncate(100, '....',  true) }}</span>
@@ -63,24 +70,31 @@
                 </div>
 
                 <div class="w-full flex flex-col flex-grow align-center mt-4 w-full ">
-                    <div class="flex flex-col justify-start items-center mdpy-8">
-                        <h5 class="text-center text-lg font-semibold mb-3">Options déja activé pour cette
+                    <div class="flex flex-col justify-start items-center md:py-8">
+                        <h5 class="text-center md:w-6/12 text-sm md:text-lg font-semibold mb-3">Options déja activé pour cette
                             salle </h5>
-                        {% for permission in subsidiary.partner.globalPermissions %}
-                            <div class="flex flex-col justify-start items-center font-extra-light  lowercase text-base lg:text-lg text-zinc-900 md:mb-5 lg:mb-3">
+                        <div class="w-full font-extra-light  lowercase text-xs md:text-base text-zinc-900 md:mb-5 lg:mb-3">
+
+                            {% for permission in subsidiary.partner.globalPermissions %}
                                 {% if permission.isIsActive == true %}
-                                    <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F"></i>
-                                    <span>{{ permission.permission.name }}</span>
+                                    <div class="flex justify-start font-extra-light  lowercase text-zinc-900 mb-3 w-full">
+                                        <ul class="flex">
+                                            <li>
+                                                <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F"></i>
+                                                <span>{{ permission.permission.name }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
 
                                 {% endif %}
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
 
-                        <div class="flex justify-end">
+                        <div class="flex justify-end w-full">
                             {% if is_granted('ROLE_TECH') %}
                                 <a
                                         href="{{ path('subsidiary_edit', {'id' : subsidiary.id}) }}"
-                                        class="border-2 border-orange-200 rounded px-5 py-1 text-base text-zinc-900 hover:border-teal-200 md:mt-10">
+                                        class="border-2 border-orange-200 rounded px-5 py-1 text-xs  md:text-base text-zinc-900 hover:border-teal-200 md:mt-10">
                                     Modifier la salle
                                 </a>
                             {% endif %}

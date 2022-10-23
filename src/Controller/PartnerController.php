@@ -56,7 +56,7 @@ class PartnerController extends AbstractController
         
         $partners = $partnerRepository->findPartnerBySearch($data);
 
-        if ($request->isXmlHttpRequest()) {
+        if ($request->get('ajax')) {
             return new JsonResponse([
                'content' => $this->renderView('components/dashboard/content-dashboard/_partner-card.html.twig',
                ['partners' => $partners]),

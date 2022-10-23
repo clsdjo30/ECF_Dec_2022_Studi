@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Partner;
 use App\Entity\Subsidiary;
 use App\Form\SubsidiaryNewType;
 use App\Repository\SubsidiaryRepository;
@@ -27,7 +28,8 @@ class SubsidiaryController extends AbstractController
         Request $request,
         Subsidiary $subsidiary,
         SubsidiaryRepository $subsidiaryRepository,
-        FileUploader $fileUploader
+        FileUploader $fileUploader,
+        Partner $partner
 
     ): Response
     {
@@ -46,7 +48,8 @@ class SubsidiaryController extends AbstractController
             $subsidiaryRepository->save($subsidiary, true);
 
             $this->addFlash('success', 'Modifications de la salle de sport bien enregistré ! ');
-            return $this->redirectToRoute('partner');
+
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 
         return $this->renderForm('subsidiary/edit.html.twig', [

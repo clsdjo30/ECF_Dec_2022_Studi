@@ -16,10 +16,12 @@ use App\Repository\PartnerRepository;
 use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -39,17 +41,29 @@ class PartnerController extends AbstractController
     #[Route('/', name: 'partner')]
     public function index(
         PartnerRepository $partnerRepository,
+       
         Request $request
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_TECH');
 
-        $search = new SearchData();
-
-        $form = $this->createForm(SearchFormType::class, $search);
+        //en envoi la pagination
+        $data = new SearchData();
+        $data->page = $request->get('page', 1);
+         
+        $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
+        
+        $partners = $partnerRepository->findPartnerBySearch($data);
 
-        $partners = $partnerRepository->findPartnerBySearch($search);
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+               'content' => $this->renderView('components/dashboard/content-dashboard/_partner-card.html.twig',
+               ['partners' => $partners]),
+                'sorting' => $this->renderView('partner/_sorting.html.twig', ['partners' => $partners]),
+
+            ]);
+        }
 
         return $this->render('partner/index.html.twig', [
             'partners' => $partners,

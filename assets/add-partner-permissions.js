@@ -11,16 +11,16 @@ const addFormToCollection = (e) => {
             collectionHolder.dataset.index
 
         );
+    addTagFormDeleteLink(item);
 
     collectionHolder.appendChild(item);
 
     collectionHolder.dataset.index++;
 
-    addTagFormDeleteLink(item);
 };
 const addTagFormDeleteLink = (item) => {
     const removeFormButton = document.createElement('button');
-    removeFormButton.innerHTML = '<i class="fas fa-trash text-sm text-red-600 mr-6"> Suprimer';
+    removeFormButton.innerHTML = '<i class="fas fa-trash text-sm text-red-600"> Suprimer';
 
     item.append(removeFormButton);
 

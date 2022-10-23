@@ -1,11 +1,11 @@
+import {Flipper, spring} from 'flip-toolkit'
+
 /*
 * @property {HTMLElement|null} pagination
 * @property {HTMLElement|null} form
 * @property {HTMLElement|null} sorting
 * @property {HTMLElement|null} content
 */
-
-
 export default class Filter {
 
     /*
@@ -47,27 +47,88 @@ export default class Filter {
         data.forEach((value, key) => {
             params.append(key, value)
         })
+        console.log(params)
         return this.loadUrl(url.pathname + '?' + params.toString())
     }
 
-    async loadUrl (url, append = false) {
+    async loadUrl (url) {
+        const ajaxUrl = url + '&ajax=1'
 
-        const params = new URLSearchParams(url.split('?')[1] || '')
-        params.set('ajax', 1)
-        const response = await fetch(url.split('?')[0] + '?' + params.toString(), {
+        const response = await fetch(ajaxUrl, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
         if (response.status >= 200 && response.status < 300) {
             const data = await response.json()
-            this.flipContent(data.content, append)
             this.sorting.innerHTML = data.sorting
+            this.flipContent(data.content)
             this.pagination.innerHTML = data.pagination
+            history.replaceState({}, '', url)
         } else {
             console.error(response)
         }
 
+    }
+
+    /**
+     *Remplace les cartes avec une animation flip
+     * @param {string} content
+     */
+    flipContent (content) {
+        const springOptions = 'wobbly'
+        const exitSpring = function (element,index, onComplete) {
+            spring({
+                config: 'stiff',
+                values: {
+                    translateY: [0,-100],
+                    opacity: [1, 0]
+                },
+                onUpdate: ({ translateY, opacity }) => {
+                    element.style.opacity = opacity;
+                    element.style.transform = `translateY(${translateY}px)`;
+                },
+                onComplete
+            });
+        }
+        const appearSpring = function (element,index) {
+            spring({
+                config: 'stiff',
+                values: {
+                    translateY: [100,0],
+                    opacity: [0, 1]
+                },
+                onUpdate: ({ translateY, opacity }) => {
+                    element.style.opacity = opacity;
+                    element.style.transform = `translateY(${translateY}px)`;
+                },
+                delay: index * 15
+            });
+        }
+
+        const flipper = new Flipper({
+            element: this.content
+        })
+        this.content.children.forEach(element => {
+            flipper.addFlipped({
+                element,
+                spring: springOptions,
+                flipId: element.id,
+                shouldFlip: false,
+                onExit:exitSpring
+            })
+        })
+        flipper.recordBeforeUpdate()
+        this.content.innerHTML = content;
+        this.content.children.forEach(element => {
+            flipper.addFlipped({
+                element,
+                spring: springOptions,
+                flipId: element.id,
+                onAppear: appearSpring
+            })
+        })
+        flipper.update()
     }
 
 

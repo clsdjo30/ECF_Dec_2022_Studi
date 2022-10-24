@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Partner;
 use App\Entity\Subsidiary;
+use App\Form\SubsidiaryEditType;
 use App\Form\SubsidiaryNewType;
 use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
@@ -33,7 +34,7 @@ class SubsidiaryController extends AbstractController
 
     ): Response
     {
-        $form = $this->createForm(SubsidiaryNewType::class, $subsidiary);
+        $form = $this->createForm(SubsidiaryEditType::class, $subsidiary);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -22,6 +22,9 @@ class PartnerPermission
     #[ORM\Column]
     private ?bool $isActive;
 
+    #[ORM\OneToOne(mappedBy: 'partnerPermission', cascade: ['persist', 'remove'])]
+    private ?SubsidiaryPermission $subsidiaryPermission = null;
+
     public function __toString(): string
     {
         return $this->permission->getName();
@@ -64,6 +67,23 @@ class PartnerPermission
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getSubsidiaryPermission(): ?SubsidiaryPermission
+    {
+        return $this->subsidiaryPermission;
+    }
+
+    public function setSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        // set the owning side of the relation if necessary
+        if ($subsidiaryPermission->getPartnerPermission() !== $this) {
+            $subsidiaryPermission->setPartnerPermission($this);
+        }
+
+        $this->subsidiaryPermission = $subsidiaryPermission;
 
         return $this;
     }

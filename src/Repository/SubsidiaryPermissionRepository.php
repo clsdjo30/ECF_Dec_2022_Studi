@@ -54,5 +54,13 @@ class SubsidiaryPermissionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-
+//    public function findOneBySomeField($value): ?SubsidiaryPermission
+//    {
+//        return $this->createQueryBuilder('s')
+//            ->andWhere('s.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }

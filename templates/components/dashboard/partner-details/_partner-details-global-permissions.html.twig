@@ -9,15 +9,6 @@
                     </li>
                 </ul>
             </div>
-        {% else %}
-            <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900 mb-3">
-                <ul>
-                    <li>
-                        <i class="fa fa-ban mr-3 text-zinc-900" style="color:#FC0202"></i>
-                        <span>{{ permission.permission.name }}</span>
-                    </li>
-                </ul>
-            </div>
         {% endif %}
     {% endfor %}
 </div>

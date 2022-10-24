@@ -21,7 +21,7 @@
                                 alt="Logo de Lions Fitness Club">
                     </div>
                 </div>
-                <div class=" w-full -mt-4 -mt-20 mb-3">
+                <div class=" w-full -mt-4 lg:-mt-20 mb-3">
                     {% if partner.isActive == true %}
                         <span data-choose-partner-target="active"
                               class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-sm md:text-base text-zinc-900 font-bold ">
@@ -120,7 +120,7 @@
                             {% endfor %}
                         </div>
 
-                        <div class="flex justify-end w-full">
+                        <div class="flex justify-center lg:justify-end w-full">
                             {% if is_granted('ROLE_TECH') %}
                                 <a
                                         href="{{ path('subsidiary_edit', {'id' : subsidiary.id}) }}"

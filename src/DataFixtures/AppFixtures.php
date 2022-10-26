@@ -39,6 +39,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         $permissions = [];
+        $partnerPermissions = [];
 
         $permissionValues = [
             "Gestion des Planning",
@@ -76,8 +77,7 @@ class AppFixtures extends Fixture
         $manager->persist($userTech);
 
 
-        for ($i = 0; $i < 1; $i++) {
-
+        for ($i = 0; $i < 12; $i++) {
 
             //compte franchise
             $partner = (new Partner())
@@ -98,19 +98,15 @@ class AppFixtures extends Fixture
                 ->setRoles(['ROLE_PARTNER'])
                 ->setFranchising($partner);
 
-            foreach($permissions as $permission) {
+            foreach ($permissions as $permission) {
                 $newPartnerPerm = (new PartnerPermission())
                     ->setIsActive($faker->boolean())
-                    ->setPermission($permission)
-                ;
+                    ->setPermission($permission);
                 $partner->addGlobalPermission($newPartnerPerm);
 
-
                 $manager->persist($newPartnerPerm);
+                $partnerPermissions[] = $newPartnerPerm;
             }
-
-
-
 
             for ($j = 0; $j <= random_int(1, 3); $j++) {
 
@@ -121,7 +117,7 @@ class AppFixtures extends Fixture
                     ->setCity($faker->city())
                     ->setPostalCode($faker->randomNumber(5))
                     ->setDescription($faker->realText(250))
-                    ->setLogoUrl($faker->image(null, 600, 600, 'animals', true, true, 'cats', true, 'jpg'))
+                    ->setLogoUrl($faker->image())
                     ->setUrl($faker->url())
                     ->setPhoneNumber($faker->phoneNumber())
                     ->setIsActive($faker->boolean())
@@ -130,20 +126,30 @@ class AppFixtures extends Fixture
                     ->setUpdatedAt($faker->dateTime());
 
 
+                foreach ($partnerPermissions as $partPermission) {
+
+                    $newSubsidiaryPermission = new SubsidiaryPermission();
+                    $newSubsidiaryPermission
+                        ->setIsActive($faker->boolean())
+                        ->setPartnerPermission($partPermission);
+
+                    if(!$partPermission->isIsActive()){
+                        $park->removeSubsidiaryPermission($newSubsidiaryPermission);
+                        $manager->persist($newSubsidiaryPermission);
+                    }
+
+                    $park->addSubsidiaryPermission($newSubsidiaryPermission);
+                    $manager->persist($newSubsidiaryPermission);
+                }
+
                 //user Salle de sport pour id de connexion
                 $userSubsidiary = new User();
                 $userSubsidiary->setEmail($faker->companyEmail())
                     ->setPassword($this->encoder->hashPassword($userSubsidiary, 'password'))
                     ->setFirstName($faker->firstName())
                     ->setLastName($faker->lastName())
-                    ->setRoles(['ROLE_SUBSIDIARY'])
-                ;
+                    ->setRoles(['ROLE_SUBSIDIARY']);
 
-                $park->addSubsidiaryPermission($faker->randomElement($permissions));
-
-                foreach ($park->getSubsidiaryPermissions() as $subPerm) {
-                    $subPerm->setIsActive($faker->boolean());
-                }
                 $park->setUser($userSubsidiary);
 
                 $manager->persist($userSubsidiary);

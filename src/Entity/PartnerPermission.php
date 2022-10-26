@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PartnerPermissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PartnerPermissionRepository::class)]
@@ -22,12 +24,17 @@ class PartnerPermission
     #[ORM\Column]
     private ?bool $isActive;
 
-    #[ORM\OneToOne(mappedBy: 'partnerPermission', cascade: ['persist', 'remove'])]
-    private ?SubsidiaryPermission $subsidiaryPermission = null;
+    #[ORM\OneToMany(mappedBy: 'partnerPermission', targetEntity: SubsidiaryPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $subsidiaryPermissions;
 
     public function __toString(): string
     {
         return $this->permission->getName();
+    }
+
+    public function __construct()
+    {
+        $this->subsidiaryPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,20 +78,34 @@ class PartnerPermission
         return $this;
     }
 
-    public function getSubsidiaryPermission(): ?SubsidiaryPermission
+    /**
+     * @return Collection<int, SubsidiaryPermission>
+     */
+    public function getSubsidiaryPermissions(): Collection
     {
-        return $this->subsidiaryPermission;
+        return $this->subsidiaryPermissions;
     }
 
-    public function setSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    public function addSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
     {
-        // set the owning side of the relation if necessary
-        if ($subsidiaryPermission->getPartnerPermission() !== $this) {
+        if (!$this->subsidiaryPermissions->contains($subsidiaryPermission)) {
+            $this->subsidiaryPermissions->add($subsidiaryPermission);
             $subsidiaryPermission->setPartnerPermission($this);
         }
 
-        $this->subsidiaryPermission = $subsidiaryPermission;
+        return $this;
+    }
+
+    public function removeSubsidiaryPermission(SubsidiaryPermission $subsidiaryPermission): self
+    {
+        if ($this->subsidiaryPermissions->removeElement($subsidiaryPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subsidiaryPermission->getPartnerPermission() === $this) {
+                $subsidiaryPermission->setPartnerPermission(null);
+            }
+        }
 
         return $this;
     }
-}
+
+    }

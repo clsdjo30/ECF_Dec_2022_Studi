@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubsidiaryPermissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SubsidiaryPermissionRepository::class)]
@@ -16,11 +18,11 @@ class SubsidiaryPermission
     #[ORM\Column(nullable: true)]
     private ?bool $isActive = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subsidiaryPermissions')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'subsidiaryPermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Subsidiary $subsidiary = null;
 
-    #[ORM\OneToOne(inversedBy: 'subsidiaryPermission', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'subsidiaryPermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?PartnerPermission $partnerPermission = null;
 
@@ -59,18 +61,6 @@ class SubsidiaryPermission
         return $this;
     }
 
-    public function getPartnerPermission(): ?PartnerPermission
-    {
-        return $this->partnerPermission;
-    }
-
-    public function setPartnerPermission(PartnerPermission $partnerPermission): self
-    {
-        $this->partnerPermission = $partnerPermission;
-
-        return $this;
-    }
-
     public function setPermissionNotInclude():bool
     {
         $permissions = $this->partnerPermission;
@@ -82,4 +72,17 @@ class SubsidiaryPermission
         }
         return true;
     }
+
+    public function getPartnerPermission(): ?PartnerPermission
+    {
+        return $this->partnerPermission;
+    }
+
+    public function setPartnerPermission(?PartnerPermission $partnerPermission): self
+    {
+        $this->partnerPermission = $partnerPermission;
+
+        return $this;
+    }
+
 }

@@ -55,12 +55,15 @@ class SubsidiaryEditType extends AbstractType
                     'role' => 'switch'
                 ]
             ])
-            ->add('user', UserType::class, [
+            ->add('user', UserEditType::class, [
                 'data_class' => User::class
             ])
-            ->add('subsidiaryPermissions', EntityType::class, [
-                'class' => Permission::class,
-                'choice_label' => 'name'
+            ->add('subsidiaryPermissions', CollectionType::class, [
+                'entry_type' => PermissionSubsidiaryType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference'=> false,
             ])
 
         ;

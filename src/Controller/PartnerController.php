@@ -19,6 +19,7 @@ use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,6 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+
 
 #[Route('/partner')]
 class PartnerController extends AbstractController
@@ -354,6 +356,4 @@ class PartnerController extends AbstractController
             'form' => $subsidiaryForm,
         ]);
     }
-
-
 }

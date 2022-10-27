@@ -117,7 +117,7 @@ class AppFixtures extends Fixture
                     ->setCity($faker->city())
                     ->setPostalCode($faker->randomNumber(5))
                     ->setDescription($faker->realText(250))
-                    ->setLogoUrl($faker->image())
+                    ->setLogoUrl($faker->imageUrl(640, 480, 'animals', true))
                     ->setUrl($faker->url())
                     ->setPhoneNumber($faker->phoneNumber())
                     ->setIsActive($faker->boolean())
@@ -125,21 +125,15 @@ class AppFixtures extends Fixture
                     ->setCreatedAt($faker->dateTime())
                     ->setUpdatedAt($faker->dateTime());
 
+                foreach ($partner->getGlobalPermissions() as $globalActivePermission) {
 
-                foreach ($partnerPermissions as $partPermission) {
-
-                    $newSubsidiaryPermission = new SubsidiaryPermission();
-                    $newSubsidiaryPermission
-                        ->setIsActive($faker->boolean())
-                        ->setPartnerPermission($partPermission);
-
-                    if(!$partPermission->isIsActive()){
-                        $park->removeSubsidiaryPermission($newSubsidiaryPermission);
-                        $manager->persist($newSubsidiaryPermission);
+                    if (!$globalActivePermission->isIsActive()) {
+                        $addingPermissions = new SubsidiaryPermission();
+                        $addingPermissions->setPartnerPermission($globalActivePermission)
+                            ->setIsActive($faker->boolean());
+                        $park->addSubsidiaryPermission($addingPermissions);
+                        $manager->persist($addingPermissions);
                     }
-
-                    $park->addSubsidiaryPermission($newSubsidiaryPermission);
-                    $manager->persist($newSubsidiaryPermission);
                 }
 
                 //user Salle de sport pour id de connexion

@@ -8,8 +8,8 @@
 
 
             {{ form_start(form) }}
+            {{form_widget(form._token)}}
             <div class="flex justify-start items-center">
-                {{ form_row(form._token) }}
                 {{ include('partner/_form-new-subsidiary.html.twig') }}
             </div>
                     <h3 class="text-orange-500 text-lg font-semibold text-center mb-5 capitalize py-5">
@@ -26,7 +26,7 @@
                     </button>
                 </div>
             </div>
-            {{ form_end(form) }}
+            {{ form_end(form, {'render_rest': false}) }}
 
         </div>
     </div>

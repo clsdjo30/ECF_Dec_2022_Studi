@@ -16,10 +16,7 @@ class PartnerPermissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('permission', EntityType::class, [
-                'class' => Permission::class,
-                'choice_label' => 'name'
-            ])
+            ->add('permission')
             ->add('isActive', CheckboxType::class, [
                 'required' => false,
                 'attr' => [

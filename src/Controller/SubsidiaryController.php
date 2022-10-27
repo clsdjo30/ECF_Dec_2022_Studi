@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Subsidiary;
+use App\Form\ModifySubsidiaryPermissionType;
 use App\Form\SubsidiaryEditType;
 use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
@@ -16,6 +17,8 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 #[Route('/subsidiary')]
 class SubsidiaryController extends AbstractController
@@ -31,7 +34,7 @@ class SubsidiaryController extends AbstractController
     /**
      * @throws TransportExceptionInterface
      */
-    #[Route('/{id}/edit', name: 'subsidiary_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'subsidiary_edit', methods: ['GET', 'POST']), isGranted('ROLE_TECH')]
     public function edit(
         Request $request,
         Subsidiary $subsidiary,
@@ -40,8 +43,7 @@ class SubsidiaryController extends AbstractController
         MailerInterface $mailer,
         EntityManagerInterface $manager
 
-    ): Response
-    {
+    ): Response {
 
         $form = $this->createForm(SubsidiaryEditType::class, $subsidiary);
         $form->handleRequest($request);
@@ -83,6 +85,63 @@ class SubsidiaryController extends AbstractController
 
         return $this->renderForm('subsidiary/edit.html.twig', [
             'form' => $form,
+            'subsidiary' => $subsidiary,
         ]);
     }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/{id}/edit-permissions', name: 'subsidiary_edit_permissions', methods: [
+        'GET',
+        'POST',
+    ]), isGranted('ROLE_TECH')]
+    public function editPermissions(
+        Request $request,
+        Subsidiary $subsidiary,
+        EntityManagerInterface $manager,
+        MailerInterface $mailer
+    ): Response {
+
+
+        $form = $this->createForm(ModifySubsidiaryPermissionType::class, $subsidiary);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $subsidiary = ($form->getData());
+            $subsidiaryEmail = $subsidiary->getUser()->getEmail();
+            $subsidiaryName = $subsidiary->getUser();
+            $permissions = $subsidiary->getSubsidiaryPermissions();
+
+
+            $modificationPermissionEmail = (new TemplatedEmail())
+                ->from(new Address('contact@c-and-com.studio', 'Lions Fitness Club'))
+                ->to($subsidiaryEmail)
+                ->subject('Vos permission ont été modifié !')
+                ->context([
+                    'partner' => $subsidiaryEmail,
+                    'partnerName' => $subsidiaryName,
+                    'permissions' => $permissions,
+                ])
+                ->text('Pour plus de renseignements, merci de contacté notre équipe par mail.!')
+                ->htmlTemplate('email/permissions-modification.html.twig');
+
+
+            $manager->persist($subsidiary);
+            $mailer->send($modificationPermissionEmail);
+
+            $manager->flush();
+
+            $this->addFlash('success', 'Modifications de permissions enregistré ! ');
+
+
+            return $this->redirectToRoute('partner_show', ['id' => $subsidiary->getPartner()->getId()]);
+        }
+
+        return $this->renderForm('subsidiary/edit-permissions.html.twig', [
+            'partner' => $subsidiary,
+            'form' => $form,
+        ]);
+    }
+
 }

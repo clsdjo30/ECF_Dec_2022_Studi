@@ -12,14 +12,13 @@ use App\Form\ModifyPartnerPermissionType;
 use App\Form\PartnerEditType;
 use App\Form\PartnerType;
 use App\Form\SearchFormType;
-use App\Form\SubsidiaryEditType;
 use App\Form\SubsidiaryNewType;
 use App\Repository\PartnerRepository;
+use App\Repository\PermissionRepository;
 use App\Repository\SubsidiaryRepository;
 use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -86,7 +85,8 @@ class PartnerController extends AbstractController
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $passwordHasher,
         ResetPasswordController $resetPasswordController,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        PermissionRepository $repository
 
     ): Response {
         //On crée le formulaire pour le franchisé
@@ -96,6 +96,8 @@ class PartnerController extends AbstractController
 
         //On ajoute les permissions globales
         $partnerPermission = new PartnerPermission();
+        $permission = $repository->findOneBy(['name' => 'permission.name']);
+        $partnerPermission->setPermission($permission);
         $partner->addGlobalPermission($partnerPermission);
 
         $form = $this->createForm(PartnerType::class, $partner);
@@ -108,7 +110,6 @@ class PartnerController extends AbstractController
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime());
 
-            $partnerPermission->setIsActive(true);
             //on hash le mot de passe du partner
             $partnerPlainTextPassword = $userPartner->getPassword();
             $partnerHashedPassword = $passwordHasher->hashPassword(
@@ -145,7 +146,7 @@ class PartnerController extends AbstractController
 
             $this->addFlash('success', 'Franchisé enregistré ! ');
 
-            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 
         return $this->renderForm('partner/new.html.twig', [
@@ -279,8 +280,16 @@ class PartnerController extends AbstractController
 
         $subsidiary = new Subsidiary();
         $userRoomManager = new User();
-        $subPermission = new SubsidiaryPermission();
-        $subsidiary->addSubsidiaryPermission($subPermission);
+
+        foreach ($partner->getGlobalPermissions() as $globalActivePermission) {
+
+            if (!$globalActivePermission->isIsActive()) {
+                $addingPermissions = new SubsidiaryPermission();
+                $addingPermissions->setPartnerPermission($globalActivePermission);
+                $subsidiary->addSubsidiaryPermission($addingPermissions);
+
+            }
+        }
 
 
         $subsidiary->setUser($userRoomManager);
@@ -317,14 +326,9 @@ class PartnerController extends AbstractController
                 ->setPassword($managerHashedPassword)
                 ->setRoles(["ROLE_SUBSIDIARY"]);
 
-            if (!$subPermission->setPermissionNotInclude()){
-                $manager->persist($subPermission);
-            } else {
-                $this->addFlash('error', 'Cette permission est deja activée');
-            }
-
 
             $manager->persist($userRoomManager);
+            $manager->persist($addingPermissions);
             $manager->persist($partner);
             $manager->persist($subsidiary);
 
@@ -348,7 +352,7 @@ class PartnerController extends AbstractController
 
             $this->addFlash('success', 'Une nouvelle salle de sport a bien été ajouté au franchisé! ');
 
-            return $this->redirectToRoute('partner', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 
         return $this->renderForm('partner/new-subsidiary.html.twig', [

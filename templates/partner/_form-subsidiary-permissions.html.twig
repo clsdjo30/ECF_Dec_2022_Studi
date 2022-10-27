@@ -35,25 +35,7 @@
 <h3 class="text-orange-500 text-lg font-semibold py-1">
    Les options ci-dessous peuvent être ajouter à cette salle
 </h3>
-    {% for subsidiaryPermission in form.subsidiaryPermissions %}
-        {% for falsePerm in  subsidiaryPermission.partnerPermission.vars.choices%}
-            {% if falsePerm.data.isActive == false %}
-                <ul class="list-disc list-inside">
-                    <li >{{ falsePerm.data }}</li>
-                </ul>
-            {% endif %}
 
-        {% endfor %}
-    {% endfor %}
-
-    <div class="w-full flex justify-end items-center">
-        <button type="button"
-                class="js-btn-new flex items-center justify-center w-8/12 lg:w-4/12 px-4 py-1 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
-                data-collection-holder-class="globalPermissions">
-            <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
-            Ajouter des options
-        </button>
-    </div>
     <div class="flex justify-start items-center">
         <ul
                 class="globalPermissions flex flex-col lg:justify-start w-full"

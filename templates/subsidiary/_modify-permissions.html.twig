@@ -35,7 +35,7 @@
     <div class="flex flex-col items-center bg-white rounded shadow p-3 md:p-10 w-full">
 
         <h1 class="text-center text-zinc-900 uppercase font-bold text-lg pb-3 md:pb-12">
-            Gestion des Permissions
+            Gestion des Permissions de Salle
         </h1>
         <div class="flex flex-col justify-center items-start w-full">
             <h3 class="text-orange-500 text-lg font-semibold py-1">
@@ -44,21 +44,13 @@
 
         </div>
         <div class="w-full lg:px-28">
-            <div class="w-full flex justify-end items-center mb-5 mt-8">
 
-                <button type="button"
-                        class="js-btn-new flex items-center justify-center w-5/12  lg:w-3/12 lg:px-6 py-2 border-2 border-orange-500/50 rounded text-sm lg:text-base text-zinc-900 hover:border-teal-500"
-                        data-collection-holder-class="globalPermissions">
-                    <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
-                    Ajouter des options
-                </button>
-            </div>
             {{ form_start(form) }}
             <div class="flex justify-start items-center">
                 <ul
                         class="globalPermissions flex flex-col justify-start w-full"
                         data-prototype="{{ formMacros.printPermissionRow(form.subsidiaryPermissions.vars.prototype)|e('html_attr') }}"
-                        data_index="{{ form.subsidiaryPermissions|length > 0 ? form.subsidiaryPermissions|last.vars.id + 1 : 0 }}"
+                        data_index="{{ form.subsidiaryPermissions|length > 0 ? form.subsidiaryPermissions|last.vars.name + 1 : 0 }}"
                 >
 
                     {% for permissionForm in form.subsidiaryPermissions %}

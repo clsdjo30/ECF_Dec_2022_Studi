@@ -21,7 +21,7 @@
                                 alt="Logo de Lions Fitness Club">
                     </div>
                 </div>
-                <div class=" w-full -mt-4 mb-3">
+                <div class=" w-full -mt-4 lg:-mt-20 mb-3">
                     {% if partner.isActive == true %}
                         <span data-choose-partner-target="active"
                               class="px-5 py-1 rounded-md shadow-lg bg-teal-200 text-sm md:text-base text-zinc-900 font-bold ">
@@ -43,7 +43,7 @@
                                 </span>
                     </span>
                 </div>
-                <div class=" font-extra-light  lowercase text-lg text-zinc-900 lg:-mt-24">
+                <div class=" font-extra-light  lowercase text-lg text-zinc-900">
                         <span class="font-extra-light  lowercase text-sm lg:text-xl ">
                                 <i class="fa fa-user mr-3" style="color: #ED8428;"></i>
                                 <span class="text-teal-600 capitalize">{{ subsidiary.user.firstname }} {{ subsidiary.user.lastname }} </span>
@@ -64,24 +64,31 @@
                 </div>
                 <div class="font-extra-light text-xs md:text-base text-zinc-900 mt-5 mb-3">
                     <i class="fa fa-building mr-3" style="color: #ED8428;"></i>
-
                     <span>{{ subsidiary.description | u.truncate(100, '....',  true) }}</span>
-
+                </div>
+                <div class="flex justify-end w-full">
+                    {% if is_granted('ROLE_TECH') %}
+                        <a
+                                href="{{ path('subsidiary_edit', {'id' : subsidiary.id}) }}"
+                                class="border-2 border-orange-200 rounded px-5 py-1 text-xs  md:text-base text-zinc-900 hover:border-teal-200 md:mt-10">
+                            Modifier la salle
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="w-full flex flex-col flex-grow align-center mt-4 w-full ">
                     <div class="flex flex-col justify-start items-center md:py-8">
-                        <h5 class="text-center md:w-6/12 text-sm md:text-lg font-semibold mb-3">Options déja activé pour cette
-                            salle </h5>
+                        <h5 class="text-center md:w-6/12 text-sm md:text-lg font-semibold mb-3">
+                            Options disponibles pour cette salle
+                        </h5>
                         <div class="w-full font-extra-light  lowercase text-xs md:text-base text-zinc-900 md:mb-5 lg:mb-3">
-
-                            {% for permission in subsidiary.partner.globalPermissions %}
-                                {% if permission.isIsActive == true %}
+                            {% for permission in subsidiary.subsidiaryPermissions %}
+                                {% if permission.isIsActive == false %}
                                     <div class="flex justify-start font-extra-light  lowercase text-zinc-900 mb-3 w-full">
                                         <ul class="flex">
                                             <li>
                                                 <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F"></i>
-                                                <span>{{ permission.permission.name }}</span>
+                                                <span>{{ permission.partnerPermission.permission.name }}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -89,13 +96,35 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
+                    </div>
+                    <div class="flex flex-col justify-start items-center mt-3">
+                        <h5 class="text-center md:w-6/12 text-sm md:text-lg font-semibold mb-3">
+                            Options ajoutées à la salle
+                        </h5>
+                        <div class="w-full font-extra-light  lowercase text-xs md:text-base text-zinc-900 md:mb-5 lg:mb-3">
 
+
+                                {% for permission in subsidiary.subsidiaryPermissions %}
+                                    {% if permission.isActive == true %}
+                                        <div class="flex justify-start font-extra-light  lowercase text-zinc-900 mb-3 w-full">
+                                            <ul class="flex">
+                                                <li>
+                                                    <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F"></i>
+                                                    <span>
+                                                {{ permission }}
+                                                </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                        </div>
                         <div class="flex justify-end w-full">
                             {% if is_granted('ROLE_TECH') %}
                                 <a
-                                        href="{{ path('subsidiary_edit', {'id' : subsidiary.id}) }}"
+                                        href="{{ path('subsidiary_edit_permissions', {'id' : subsidiary.id}) }}"
                                         class="border-2 border-orange-200 rounded px-5 py-1 text-xs  md:text-base text-zinc-900 hover:border-teal-200 md:mt-10">
-                                    Modifier la salle
+                                    Modifier les options supplémentaire
                                 </a>
                             {% endif %}
                         </div>

@@ -1,0 +1,62 @@
+
+
+{% import _self as formMacros %}
+
+<!--MACRO POUR AJOUT PERMISSION-->
+{% macro printPermissionRow(permissionForm) %}
+
+
+    <li class="js-btn-remove w-full flex flex-col lg:flex-row lg:justify-between items-center mb-3 mt-5">
+
+        {{ form_widget(permissionForm.partnerPermission, {
+            'attr': {
+                'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-10'
+
+            }
+        }) }}
+        <span class="flex  form-check form-switch mt-2 lg:mt-0 w-full -ml-16 lg:ml-20"
+              id="btn-delete">
+
+            {{ form_label(permissionForm.isActive, "Activer l'option ?", {
+                'label_attr': {
+                    'class': 'italic text-base  text-orange-400 mr-20'
+                }
+            }) }}
+            {{ form_widget(permissionForm.isActive,{
+                'attr': {
+                    'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
+
+                },
+                'type' :"checkbox",
+                'role' :"switch",
+                'id' :"flexSwitchCheckChecked",
+            } ) }}
+        </span>
+    </li>
+    <hr>
+
+
+{% endmacro %}
+
+
+<h3 class="text-orange-500 text-lg font-semibold text-center mb-5 capitalize py-5">
+    Permission du contrat de franchise
+</h3>
+<div class="w-full mb-3 ">
+
+    <div class="flex justify-start items-center">
+        <ul
+                class="globalPermissions flex flex-col lg:justify-start w-full"
+                data-prototype="{{ formMacros.printPermissionRow(form.subsidiaryPermissions.vars.prototype)|e('html_attr') }}"
+                data_index="{{ form.subsidiaryPermissions|length > 0 ? form.subsidiaryPermissions|last.vars.name + 1 : 0 }}"
+        >
+
+            {% for permissionForm in form.subsidiaryPermissions %}
+                {{ formMacros.printPermissionRow(permissionForm) }}
+            {% endfor %}
+
+        </ul>
+    </div>
+
+
+</div>

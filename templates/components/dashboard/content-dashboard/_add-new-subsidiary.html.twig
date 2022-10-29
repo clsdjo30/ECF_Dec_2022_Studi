@@ -7,19 +7,17 @@
         <div class="w-full px-28">
 
 
-            {{ form_start(subsidform) }}
+            {{ form_start(form) }}
+            {{form_widget(form._token)}}
             <div class="flex justify-start items-center">
-                {{ form_row(subsidform._token) }}
                 {{ include('partner/_form-new-subsidiary.html.twig') }}
             </div>
-            <div class="w-full flex justify-end items-center mb-5 mt-8">
-
-                <button type="button"
-                        class="js-btn-new flex items-center justify-center w-3/12 px-6 py-2 border-2 border-orange-500/50 rounded text-base text-zinc-900 hover:border-teal-500"
-                        data-collection-holder-class="globalPermissions">
-                    <i class="fas fa-plus  text-teal-400 hover:text-orange-500 pr-2"></i>
-                    Ajouter des options
-                </button>
+                    <h3 class="text-orange-500 text-lg font-semibold text-center mb-5 capitalize py-5">
+                        Permission de la salle
+                    </h3>
+            <div class="w-full flex justify-end items-center mt-1">
+                    {{ include('partner/_form-subsidiary-permissions.html.twig') }}
+                </div>
             </div>
             <div class="w-full flex justify-end items-center mb-5 mt-8">
                 <div class="w-full flex justify-end items-center mb-5 mt-8">
@@ -28,11 +26,11 @@
                     </button>
                 </div>
             </div>
-            {{ form_end(subsidform) }}
+            {{ form_end(form, {'render_rest': false}) }}
 
         </div>
     </div>
-</div>
+
 
 
 

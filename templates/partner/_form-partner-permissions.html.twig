@@ -9,8 +9,8 @@
         {{ form_widget(permissionForm.permission, {
             'attr': {
                 'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-10'
-
-            }
+            },
+            'placeholder': 'Choisissez une permission'
         }) }}
         <span class="flex  form-check form-switch mt-2 lg:mt-0 w-full -ml-16 lg:ml-20"
                 id="btn-delete">
@@ -50,12 +50,12 @@
             </button>
         </div>
         <div class="flex justify-start items-center">
+
             <ul
                     class="globalPermissions flex flex-col lg:justify-start w-full"
                     data-prototype="{{ formMacros.printPermissionRow(form.globalPermissions.vars.prototype)|e('html_attr') }}"
                     data_index="{{ form.globalPermissions|length > 0 ? form.globalPermissions|last.vars.name + 1 : 0 }}"
             >
-
                 {% for permissionForm in form.globalPermissions %}
                     {{ formMacros.printPermissionRow(permissionForm) }}
                 {% endfor %}

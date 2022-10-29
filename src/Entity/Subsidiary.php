@@ -51,7 +51,7 @@ class Subsidiary
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(
-        min:20,
+        min:10,
         minMessage: "L'adresse est trop courte"
     )]
     private ?string $address = null;
@@ -93,18 +93,17 @@ class Subsidiary
     #[Timestampable(on: 'update')]
     private ?DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'subsidiary', targetEntity: SubsidiaryPermission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'subsidiary', targetEntity: SubsidiaryPermission::class, cascade: ['persist', 'remove'])]
     private Collection $subsidiaryPermissions;
-
-    public function __toString(): string
-    {
-        return $this->name;
-    }
-
 
     public function __construct()
     {
         $this->subsidiaryPermissions = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

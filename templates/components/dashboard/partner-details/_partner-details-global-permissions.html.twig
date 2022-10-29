@@ -1,23 +1,14 @@
-<div class="w-full font-extra-light  lowercase text-lg text-zinc-900 mb-3">
+<div class="w-full lg:w-3/12 font-extra-light  lowercase text-lg text-zinc-900 mb-3">
     {% for permission in partner.globalPermissions %}
         {% if permission.isActive == true %}
-            <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900 mb-3">
-                <ul>
+
+                <ul  class="font-extra-light  lowercase text-xs md:text-base text-zinc-900 mb-3">
                     <li>
                         <i class="fa fa-check mr-3 text-zinc-900" style="color:#38B11F"></i>
                         <span>{{ permission.permission.name }}</span>
                     </li>
                 </ul>
-            </div>
-        {% else %}
-            <div class="font-extra-light  lowercase text-xs md:text-base text-zinc-900 mb-3">
-                <ul>
-                    <li>
-                        <i class="fa fa-ban mr-3 text-zinc-900" style="color:#FC0202"></i>
-                        <span>{{ permission.permission.name }}</span>
-                    </li>
-                </ul>
-            </div>
+
         {% endif %}
     {% endfor %}
 </div>

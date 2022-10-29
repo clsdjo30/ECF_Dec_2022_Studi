@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification des permissions{% endblock %}
+
+{% block main %}
+    {{ include('/navigation/_mobil-navigation.html.twig') }}
+    {{ include('/navigation/_sidebar-menu-desktop.html.twig') }}
+
+    <div class="relative md:ml-60">
+        <!-- Header -->
+        <div class="bg-orange-500 md:pt-12 pb-32 pt-12 lg:h-max">
+            <div class="md:px-4 md:px-10 mx-auto my-auto w-full">
+                {% block mainTop %}
+                    {{ include('subsidiary/_modify-permissions.html.twig') }}
+                {% endblock %}
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+
+        {{ include('components/dashboard/content-dashboard/_footer.html.twig') }}
+    </div>
+{% endblock %}

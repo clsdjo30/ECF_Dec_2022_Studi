@@ -6,6 +6,7 @@ use App\Entity\Subsidiary;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -52,8 +53,15 @@ class SubsidiaryNewType extends AbstractType
                     'role' => 'switch'
                 ]
             ])
-            ->add('user', UserEditType::class, [
+            ->add('user', UserType::class, [
                 'data_class' => User::class
+            ])
+            ->add('subsidiaryPermissions', CollectionType::class, [
+                'entry_type' => PermissionSubsidiaryType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference'=> false,
             ])
 
         ;

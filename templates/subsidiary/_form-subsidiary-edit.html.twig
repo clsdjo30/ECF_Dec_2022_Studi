@@ -10,26 +10,26 @@
                     <h4 class="text-orange-600 text-xl font-semibold mb-3">Informations de la salle</h4>
                     <div class="flex justify-between items-center mb-3 ">
                         <div class="flex flex-col w-6/12">
-                            {{ form_label(subsidform.name, 'Nom de la salle', {
+                            {{ form_label(form.name, 'Nom de la salle', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-1'
                                 }
                             }) }}
-                            {{ form_widget(subsidform.name, {
+                            {{ form_widget(form.name, {
                                 'attr': {
                                     'class': 'input-partner'
                                 },
                             }) }}
-                            {{ form_errors(subsidform.name) }}
+                            {{ form_errors(form.name) }}
                         </div>
                         <!-- Subsidiary PhoneNumber -->
                         <div class="flex flex-col w-5/12">
-                            {{ form_label(subsidform.phoneNumber, 'Numéro de téléphone', {
+                            {{ form_label(form.phoneNumber, 'Numéro de téléphone', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-1'
                                 }
                             }) }}
-                            {{ form_widget(subsidform.phoneNumber,{
+                            {{ form_widget(form.phoneNumber,{
                                 'attr': {
                                     'class': 'input-partner'
                                 }
@@ -38,12 +38,12 @@
                     </div>
                     <div class="flex flex-col w-full">
                         <!-- Subsidiary logo -->
-                        {{ form_label(subsidform.logo, 'Logo de la salle', {
+                        {{ form_label(form.logo, 'Logo de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 ml-3 pb-2'
                             }
                         }) }}
-                        {{ form_widget(subsidform.logo,{
+                        {{ form_widget(form.logo,{
                             'attr': {
                                 'class': 'input-partner'
                             }
@@ -51,12 +51,12 @@
                     </div>
                     <div class="flex flex-col w-full mt-3">
                         <!-- Subsidiary website -->
-                        {{ form_label(subsidform.url, 'Site internet de la salle', {
+                        {{ form_label(form.url, 'Site internet de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 pb-2'
                             }
                         }) }}
-                        {{ form_widget(subsidform.url,{
+                        {{ form_widget(form.url,{
                             'attr': {
                                 'class': 'input-partner'
                             }
@@ -65,39 +65,39 @@
 
                     <div class="flex flex-col w-full mt-3">
                         <!-- Subsidiary Address -->
-                        {{ form_label(subsidform.address, 'Adresse', {
+                        {{ form_label(form.address, 'Adresse', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 ml-3 pb-2'
                             }
                         }) }}
-                        {{ form_widget(subsidform.address,{
+                        {{ form_widget(form.address,{
                             'attr': {
                                 'class': 'input-partner'
                             }
                         } ) }}
-                        {{ form_errors(subsidform.address) }}
+                        {{ form_errors(form.address) }}
                     </div>
                     <div class="flex justify-between items-center mt-3">
                         <!-- Subsidiary city -->
                         <div class="flex flex-col w-4/12">
-                            {{ form_label(subsidform.city, 'Ville', {
+                            {{ form_label(form.city, 'Ville', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-500 ml-3 pb-2'
                                 }
                             }) }}
-                            {{ form_widget(subsidform.city, {
+                            {{ form_widget(form.city, {
                                 'attr': {
                                     'class': 'input-partner'
                                 }
                             }) }}
                         </div>
                         <div class="flex flex-col w-3/12">
-                            {{ form_label(subsidform.postalCode, 'Code postal', {
+                            {{ form_label(form.postalCode, 'Code postal', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-2'
                                 }
                             }) }}
-                            {{ form_widget(subsidform.postalCode,{
+                            {{ form_widget(form.postalCode,{
                                 'attr': {
                                     'class': 'input-partner'
                                 }
@@ -106,28 +106,28 @@
                     </div>
                     <div class="flex flex-col w-full mt-3">
                         <!-- Subsidiary Description -->
-                        {{ form_label(subsidform.description, 'Déscription de la salle', {
+                        {{ form_label(form.description, 'Déscription de la salle', {
                             'label_attr': {
                                 'class': 'italic text-sm text-tail-400 pb-2'
                             }
                         }) }}
-                        {{ form_widget(subsidform.description,{
+                        {{ form_widget(form.description,{
                             'attr': {
                                 'class': 'input-partner'
                             }
                         } ) }}
-                        {{ form_errors(subsidform.description) }}
+                        {{ form_errors(form.description) }}
                     </div>
 
                     <div class="flex items-center w-full mt-3 mb-6 ">
-                        {{ form_label(subsidform.isActive, 'La salle est en activitée', {
+                        {{ form_label(form.isActive, 'La salle est en activitée', {
                             'label_attr': {
                                 'class': 'text-base text-orange-400',
                             },
 
                         }) }}
                         <div class="flex form-check form-switch w-4/12 ml-10">
-                            {{ form_widget(subsidform.isActive,{
+                            {{ form_widget(form.isActive,{
                                 'attr': {
                                     'class': 'form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-teal-400 bg-no-repeat bg-contain bg-orange-300 focus:outline-none cursor-pointer shadow',
 
@@ -148,24 +148,24 @@
                         <h4 class="text-orange-600 text-xl font-semibold">Informations du manager</h4>
                             <div class="flex flex-col w-8/12">
                                 .
-                                {{ form_label(subsidform.user.firstName, 'Prénom du Manager', {
+                                {{ form_label(form.user.firstName, 'Prénom du Manager', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
                                     }
                                 }) }}
-                                {{ form_widget(subsidform.user.firstName, {
+                                {{ form_widget(form.user.firstName, {
                                     'attr': {
                                         'class': 'input-partner '
                                     }
                                 }) }}
                             </div>
                             <div class="flex flex-col w-8/12">
-                                {{ form_label(subsidform.user.lastName, 'Nom du Manager', {
+                                {{ form_label(form.user.lastName, 'Nom du Manager', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
                                     }
                                 }) }}
-                                {{ form_widget(subsidform.user.lastName,{
+                                {{ form_widget(form.user.lastName,{
                                     'attr': {
                                         'class': 'input-partner '
                                     }
@@ -176,12 +176,12 @@
                             <h4 class="text-orange-600 text-xl font-semibold mb-3">Identifiants de connexion du
                                 Manager</h4>
                             <div class="flex flex-col w-8/12 mb-3">
-                                {{ form_label(subsidform.user.email , 'Email', {
+                                {{ form_label(form.user.email , 'Email', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
                                     }
                                 }) }}
-                                {{ form_widget(subsidform.user.email, {
+                                {{ form_widget(form.user.email, {
                                     'attr': {
                                         'class': 'input-partner '
                                     }

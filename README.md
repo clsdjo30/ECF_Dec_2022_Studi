@@ -7,21 +7,21 @@ Une démonstration du projet est disponible - [Lions Fitness Club](https://ecf-s
 Pour tester l'application en technicien :
 
 ````
-id : 
+id : technicien@fitness-club.fr
 mdp: password
 ````
 
 Pour tester l'application en Franchisé :
 
 ````
-id : 
+id : franchise@fitness-club.fr
 mdp: password
 ````
 
 Pour tester l'application en Manager de salle :
 
 ````
-id : 
+id : manager@fitness-club.fr
 mdp: password
 ````
 

@@ -27,9 +27,6 @@ class Permission
     #[ORM\OneToMany(mappedBy: 'permission', targetEntity: PartnerPermission::class, orphanRemoval: true)]
     private Collection $partnerPermissions;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $isActive = null;
-
     public function __construct()
     {
         $this->partnerPermissions = new ArrayCollection();
@@ -83,18 +80,6 @@ class Permission
                 $partnerPermission->setPermission(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(?bool $isActive): self
-    {
-        $this->isActive = $isActive;
 
         return $this;
     }

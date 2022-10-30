@@ -31,7 +31,7 @@
         "symfony/sendgrid-mailer": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
         "symfony/validator": "6.1.*",
-        "symfony/webpack-encore-bundle": "^1.15",
+        "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "6.1.*",
         "symfonycasts/reset-password-bundle": "1.13",
         "twig/cssinliner-extra": "^3.4",

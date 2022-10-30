@@ -280,18 +280,17 @@ class PartnerController extends AbstractController
 
         $subsidiary = new Subsidiary();
         $userRoomManager = new User();
+        $partnerPermissions = $partner->getGlobalPermissions();
 
-        foreach ($partner->getGlobalPermissions() as $globalActivePermission) {
+        foreach ($partnerPermissions as $globalActivePermission) {
 
             if (!$globalActivePermission->isIsActive()) {
                 $addingPermissions = new SubsidiaryPermission();
                 $addingPermissions->setPartnerPermission($globalActivePermission);
                 $subsidiary->addSubsidiaryPermission($addingPermissions);
-
+                $manager->persist($addingPermissions);
             }
         }
-
-
         $subsidiary->setUser($userRoomManager);
 
         $subsidiaryForm = $this->createForm(SubsidiaryNewType::class, $subsidiary);
@@ -328,7 +327,6 @@ class PartnerController extends AbstractController
 
 
             $manager->persist($userRoomManager);
-            $manager->persist($addingPermissions);
             $manager->persist($partner);
             $manager->persist($subsidiary);
 

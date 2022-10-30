@@ -14,14 +14,14 @@ mdp: password
 Pour tester l'application en Franchisé :
 
 ````
-id : franchise@fitness-club.fr
+id : franchise@lions-fitness-club.fr
 mdp: password
 ````
 
 Pour tester l'application en Manager de salle :
 
 ````
-id : manager@fitness-club.fr
+id : manager@lions-fitness-club.com
 mdp: password
 ````
 

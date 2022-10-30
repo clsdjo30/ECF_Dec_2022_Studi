@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://127.0.0.1:3306/ecf_dec_2022_studi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="Heroku ClearDB Lions" uuid="ad94de1d-c09f-401c-a890-45e3df282df7">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_e60f76855c01a0b</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

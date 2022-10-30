@@ -95,10 +95,15 @@ class PartnerController extends AbstractController
         $partner->setUser($userPartner);
 
         //On ajoute les permissions globales
-        $partnerPermission = new PartnerPermission();
-        $permission = $repository->findOneBy(['name' => 'permission.name']);
-        $partnerPermission->setPermission($permission);
-        $partner->addGlobalPermission($partnerPermission);
+        $permissions = $repository->findAll();
+
+        foreach ($permissions as $perm) {
+            $partnerPermission = new PartnerPermission();
+            $partnerPermission->setPermission($perm);
+            $partner->addGlobalPermission($partnerPermission);
+            $manager->persist($partnerPermission);
+        }
+
 
         $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
@@ -281,6 +286,8 @@ class PartnerController extends AbstractController
         $subsidiary = new Subsidiary();
         $userRoomManager = new User();
         $partnerPermissions = $partner->getGlobalPermissions();
+        $subsidiary->setUser($userRoomManager);
+
 
         foreach ($partnerPermissions as $globalActivePermission) {
 
@@ -291,7 +298,6 @@ class PartnerController extends AbstractController
                 $manager->persist($addingPermissions);
             }
         }
-        $subsidiary->setUser($userRoomManager);
 
         $subsidiaryForm = $this->createForm(SubsidiaryNewType::class, $subsidiary);
         $subsidiaryForm->handleRequest($request);
@@ -354,7 +360,7 @@ class PartnerController extends AbstractController
         }
 
         return $this->renderForm('partner/new-subsidiary.html.twig', [
-            'partner' => $subsidiary,
+            'subsidiary' => $subsidiary,
             'form' => $subsidiaryForm,
         ]);
     }

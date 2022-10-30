@@ -2,10 +2,10 @@
 
 <!--MACRO POUR AJOUT PERMISSION-->
 {% macro printPermissionRow(permissionForm) %}
-    <li class="js-btn-remove w-full flex lg:flex-row flex-wrap lg:flex-nowrap mb-3 mt-5">
+    <li class="w-full flex lg:flex-row flex-wrap lg:flex-nowrap mb-3 mt-5">
         {{ form_widget(permissionForm.partnerPermission, {
             'attr': {
-                'class': 'rounded  border-solid accent-pink-500 w-10/12 lg:w-5/12 pr-10'
+                'class': 'rounded  border-solid accent-pink-500 w-10/12 lg:w-full pr-10'
 
             }
         }) }}

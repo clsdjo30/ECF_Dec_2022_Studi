@@ -2,7 +2,7 @@
 
 ## Demo
 
-Une démonstration du projet est disponible - [Lions Fitness Club](https://ecf-studi-2022.herokuapp.com/)
+Une démonstration du projet est disponible - [Lions Fitness Club](https://ecf-dec-2022.herokuapp.com/)
 
 Pour tester l'application en technicien :
 

@@ -4,13 +4,13 @@
         <div class="relative  w-full pr-4 max-w-full flex-grow flex-1 mb-3 p-4">
 
             <div class="flex flex-col">
-                <h3 class="text-orange-500 text-xl font-bold text-center mb-3 capitalize py-5">Création de la Salle de
-                    sport</h3>
                 <!-- Subsidiary Name -->
-                <div class="fle flex-col justify-between items-center">
-                    <h4 class="text-orange-600 text-xl font-semibold mb-3">Informations de la salle</h4>
-                    <div class="flex justify-between items-center mb-3 ">
-                        <div class="flex flex-col w-6/12">
+                <div class="flex flex-col justify-between items-center">
+                    <h4 class=" text-orange-600 text-sm md:text-xl font-semibold mb-3">
+                        Informations de la salle
+                    </h4>
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-3 w-full">
+                        <div class="flex flex-col justify-start w-full md:w-6/12">
                             {{ form_label(form.name, 'Nom de la salle', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-1'
@@ -21,9 +21,10 @@
                                     'class': 'input-partner'
                                 },
                             }) }}
+                            {{ form_errors(form.name) }}
                         </div>
                         <!-- Subsidiary PhoneNumber -->
-                        <div class="flex flex-col w-5/12">
+                        <div class="flex flex-col w-full md:w-5/12 pt-3 md:pt-0">
                             {{ form_label(form.phoneNumber, 'Numéro de téléphone', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-1'
@@ -34,6 +35,7 @@
                                     'class': 'input-partner'
                                 }
                             } ) }}
+                            {{ form_errors(form.phoneNumber) }}
                         </div>
                     </div>
                     <div class="flex flex-col w-full">
@@ -48,6 +50,7 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(form.logo) }}
                     </div>
                     <div class="flex flex-col w-full mt-3">
                         <!-- Subsidiary website -->
@@ -61,6 +64,7 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(form.url) }}
                     </div>
 
                     <div class="flex flex-col w-full mt-3">
@@ -75,10 +79,11 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(form.address) }}
                     </div>
-                    <div class="flex justify-between items-center mt-3">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-3 w-full mt-3 md:mt-0">
                         <!-- Subsidiary city -->
-                        <div class="flex flex-col w-4/12">
+                        <div class="flex flex-col w-full md:w-4/12">
                             {{ form_label(form.city, 'Ville', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-500 ml-3 pb-2'
@@ -89,8 +94,9 @@
                                     'class': 'input-partner'
                                 }
                             }) }}
+                            {{ form_errors(form.city) }}
                         </div>
-                        <div class="flex flex-col w-3/12">
+                        <div class="flex flex-col w-full md:w-3/12 mt-3 md:mt-0">
                             {{ form_label(form.postalCode, 'Code postal', {
                                 'label_attr': {
                                     'class': 'italic text-sm text-tail-400 ml-3 pb-2'
@@ -101,6 +107,7 @@
                                     'class': 'input-partner'
                                 }
                             } ) }}
+                            {{ form_errors(form.postalCode) }}
                         </div>
                     </div>
                     <div class="flex flex-col w-full mt-3">
@@ -115,10 +122,11 @@
                                 'class': 'input-partner'
                             }
                         } ) }}
+                        {{ form_errors(form.description) }}
                     </div>
 
                     <div class="flex items-center w-full mt-3 mb-6 ">
-                        {{ form_label(form.isActive, 'La salle est en activitée', {
+                        {{ form_label(form.isActive, 'Activer la salle ?', {
                             'label_attr': {
                                 'class': 'text-base text-orange-400',
                             },
@@ -139,12 +147,11 @@
                 </div>
                 <hr>
                 <div>
-                    <h3 class="text-orange-600 text-xl font-bold text-center my-8">Création du Manager de Salle</h3>
                     <!--Manager  Full Name-->
                     <div class="flex-col justify-between items-center">
                         <div class="flex flex-col justify-between my-5 ">
-                            <h4 class="text-orange-600 text-xl font-semibold">Informations du manager</h4>
-                            <div class="flex flex-col w-8/12">
+                            <h4 class="text-orange-600 text-sm md:text-xl font-semibold">Informations du manager</h4>
+                            <div class="flex flex-col w-full md:w-8/12">
                                 .
                                 {{ form_label(form.user.firstName, 'Prénom du Manager', {
                                     'label_attr': {
@@ -156,8 +163,9 @@
                                         'class': 'input-partner '
                                     }
                                 }) }}
+                                {{ form_errors(form.user.firstName) }}
                             </div>
-                            <div class="flex flex-col w-8/12">
+                            <div class="flex flex-col w-full md:w-8/12">
                                 {{ form_label(form.user.lastName, 'Nom du Manager', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
@@ -168,12 +176,13 @@
                                         'class': 'input-partner '
                                     }
                                 } ) }}
+                                {{ form_errors(form.user.lastName) }}
                             </div>
                         </div>
                         <div class="flex flex-col justify-between my-5">
-                            <h4 class="text-orange-600 text-xl font-semibold mb-3">Identifiants de connexion du
+                            <h4 class="text-orange-600 text-sm md:text-xl font-semibold mb-3">Identifiants de connexion du
                                 Manager</h4>
-                            <div class="flex flex-col w-8/12 mb-3">
+                            <div class="flex flex-col w-full md:w-8/12 mb-3">
                                 {{ form_label(form.user.email , 'Email', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'
@@ -184,9 +193,9 @@
                                         'class': 'input-partner '
                                     }
                                 }) }}
-
+                                {{ form_errors(form.user.email) }}
                             </div>
-                            <div class="flex flex-col w-8/12 mb-3">
+                            <div class="flex flex-col w-full md:w-8/12 mb-3">
                                 {{ form_label(form.user.password, 'Mot de passe provisoire', {
                                     'label_attr': {
                                         'class': 'italic text-sm text-tail-400 ml-3'

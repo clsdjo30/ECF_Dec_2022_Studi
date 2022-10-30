@@ -2,18 +2,18 @@
 
 <!--MACRO POUR AJOUT PERMISSION-->
 {% macro printPermissionRow(permissionForm) %}
-    <li class="js-btn-remove w-full flex flex-col lg:flex-row lg:justify-between items-center mb-3 mt-5">
+    <li class="js-btn-remove w-full flex lg:flex-row flex-wrap lg:flex-nowrap mb-3 mt-5">
         {{ form_widget(permissionForm.partnerPermission, {
             'attr': {
-                'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-10'
+                'class': 'rounded  border-solid accent-pink-500 w-10/12 lg:w-5/12 pr-10'
 
             }
         }) }}
-        <span class="flex  form-check form-switch mt-2 lg:mt-0 w-full -ml-16 lg:ml-20"
+        <span class="flex flex-row form-check form-switch mt-2 lg:mt-0 w-full -ml-10 mr:0 lg:ml-20"
               id="btn-delete">
             {{ form_label(permissionForm.isActive, "Activer l'option ?", {
                 'label_attr': {
-                    'class': 'italic text-base  text-orange-400 mr-20'
+                    'class': 'italic text-sm  text-orange-400 mr-20'
                 }
             }) }}
             {{ form_widget(permissionForm.isActive,{

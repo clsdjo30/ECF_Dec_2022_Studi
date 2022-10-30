@@ -2,15 +2,15 @@
 
 <!--MACRO POUR AJOUT PERMISSION-->
 {% macro printPermissionRow(permissionForm) %}
-    <li class="permission-info w-full  flex flex-col justify-start items-center mb-3 mt-5">
+    <li class="permission-info w-full  flex flex-col justify-start items-center mb-3 mt-5 lg:w-10/12 xl:w-8/12">
 
         {{ form_widget(permissionForm.partnerPermission, {
             'attr': {
-                'class': 'rounded  border-solid accent-pink-500 w-full lg:w-5/12 pr-2 lg:pr-10'
+                'class': 'rounded  border-solid accent-pink-500 w-full  pr-2 lg:pr-10'
 
             }
         }) }}
-        <span class="flex justify-between items-center form-check form-switch w-full lg:w-4/12">
+        <span class="flex justify-between items-center form-check form-switch w-full ">
 
             {{ form_label(permissionForm.isActive, "Activer l'option ?", {
                 'label_attr': {

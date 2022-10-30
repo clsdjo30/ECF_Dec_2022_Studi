@@ -20,6 +20,7 @@ const addFormToCollection = (e) => {
 };
 const addTagFormDeleteLink = (item) => {
     const removeFormButton = document.createElement('button');
+    removeFormButton.classList.add('w-1/12');
     removeFormButton.innerHTML = '<i class="fas fa-trash text-sm text-red-600"> Suprimer';
 
     item.append(removeFormButton);

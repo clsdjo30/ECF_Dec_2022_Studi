@@ -88,7 +88,7 @@ class SubsidiaryTest extends KernelTestCase
      */
     public function testAddressTooShortEntity(): void
     {
-        $this->assertHasErrors($this->getEntity()->setAddress('18, rue de b'), 1);
+        $this->assertHasErrors($this->getEntity()->setAddress('18, rue '), 1);
     }
 
     /**

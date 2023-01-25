@@ -25,11 +25,6 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
-        "heroku-postbuild": "node_modules/.bin/encore production"
-    },
-    "engines": {
-        "node": "v16.16.0",
-        "npm": "8.16.0"
     },
     "dependencies": {
         "@a2lix/symfony-collection": "^0.5.2",
